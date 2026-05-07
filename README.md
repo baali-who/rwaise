@@ -18,11 +18,11 @@
 
 ## 📺 Demo
 
-> **🔗 Live demo:**  https://wallet.gopnik.io/rwaise/agent
-> **🎥 Video walkthrough:** *[YouTube link to be added]*
-> **📊 Pitch deck:** *[Canva/PDF link to be added]*
-> **🐦 Twitter thread:** *[X link to be added]*
-> **🔍 Block explorer (issuer wallet):** https://livenet.xrpl.org/accounts/raqDhwGkULx4BrbRhcmZhtMvWufKSMPfmo
+> **🔗 Live demo:**  https://youtu.be/Qaf6jOLWOgI
+> **🎥 Video walkthrough:** *[(https://youtu.be/Qaf6jOLWOgI)*
+> **📊 Pitch deck:** *[(https://canva.link/sibb8p4ddhugfvn)]*
+> **🐦 Twitter thread:** *[https://x.com/BaaliWho]*
+
 
 <div align="center">
 
