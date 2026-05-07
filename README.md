@@ -34,7 +34,7 @@
 <img src="docs/architecture/Screenshot8.png" width="100" height="200">
 
 </div>
-
+FIND MORE MEDIA IN DOCS FOLDER!!! 
 <div align="center">
 
 | 9 | 11 | 6 | XLS-33 | XLS-65 | x402 |
