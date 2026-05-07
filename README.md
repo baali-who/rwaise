@@ -24,6 +24,17 @@
 > **🐦 Twitter thread:** *[https://x.com/BaaliWho]*
 
 
+<div>
+
+<img src="docs/architecture/Screenshot1.png" width="100" height="200">
+<img src="docs/architecture/Screenshot2.png" width="100" height="200">
+<img src="docs/architecture/Screenshot3.png" width="100" height="200">
+<img src="docs/architecture/Screenshot4.png" width="100" height="200">
+<img src="docs/architecture/Screenshot6.png" width="100" height="200">
+<img src="docs/architecture/Screenshot8.png" width="100" height="200">
+
+</div>
+
 <div align="center">
 
 | 9 | 11 | 6 | XLS-33 | XLS-65 | x402 |
@@ -31,7 +42,6 @@
 | Wizard steps | Sub-flags | AI agent tools | MPTs | Credentials | Pay-per-call |
 
 </div>
-
 ---
 
 ## ✨ What it does
