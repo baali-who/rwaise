@@ -1,0 +1,10 @@
+{% extends "rwaise/wizard/shell.html" %}
+{% block wizard_step %}
+{% set step_meta = {
+  "title": "Step 1 · Asset class",
+  "lede": "Pick the regulatory bucket your underlying asset falls into. The AI co-pilot uses this to suggest XRPL MPT flags + sensible defaults later.",
+  "tip": "Not sure? Choose <em>Other</em>; you can always refine the description and revisit step 6 to adjust the on-ledger token parameters.",
+  "two_col": False,
+} %}
+{% include 'rwaise/wizard/_step_form.html' %}
+{% endblock %}

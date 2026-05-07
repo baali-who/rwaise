@@ -1,0 +1,10 @@
+{% extends "rwaise/wizard/shell.html" %}
+{% block wizard_step %}
+{% set step_meta = {
+  "title": "Step 2 · Legal & SPV",
+  "lede": "The Special Purpose Vehicle is the legal entity that will hold the underlying asset and issue tokens. Its jurisdiction governs offering rules.",
+  "tip": "Most U.S. RWA issuers use a Delaware (US-DE) or Wyoming (US-WY) LLC under Reg D 506(c). Tokens for non-U.S. holders typically use Cayman or Luxembourg.",
+  "two_col": True,
+} %}
+{% include 'rwaise/wizard/_step_form.html' %}
+{% endblock %}

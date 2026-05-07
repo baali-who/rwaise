@@ -1,0 +1,124 @@
+{# Shared wizard step partial.
+
+   Each step_N.html includes this and supplies:
+     • current_step  (from shell.html context — already in scope)
+     • step_meta     (dict with title, lede, copilot_intent, tip)
+
+   iter-17 fix: previous step templates used a hardcoded `1` for the
+   step number, so Back never appeared and Finalize label was wrong.
+   This partial reads ``current_step`` from the request context, which
+   is set by ``wizard_controller.step()`` and passed through shell.html.
+#}
+<style>
+  .ws-form-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 720px) { .ws-form-grid.two-col { grid-template-columns: 1fr 1fr; } }
+  .ws-field { display: flex; flex-direction: column; gap: 4px; }
+  .ws-field label {
+    color: var(--rwaise-muted); font-size: 0.78rem;
+    font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .ws-field input, .ws-field select, .ws-field textarea {
+    width: 100%;
+    padding: 10px 14px; border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(124,92,255,0.32);
+    color: var(--rwaise-strong);
+    font-size: 0.95rem;
+    transition: border-color .12s ease, background .12s ease;
+  }
+  .ws-field input:focus, .ws-field select:focus, .ws-field textarea:focus {
+    outline: none;
+    border-color: rgba(124,92,255,0.62);
+    background: rgba(255,255,255,0.06);
+  }
+  .ws-field textarea { min-height: 92px; resize: vertical; }
+  .ws-field .ws-error { color: #ff8aa3; font-size: 0.82rem; margin-top: 2px; }
+  .ws-field input[type="checkbox"] {
+    width: auto; margin-right: 8px; accent-color: #7c5cff;
+  }
+  .ws-checkbox-row {
+    display: flex; align-items: center;
+    padding: 10px 14px; border-radius: 10px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(124,92,255,0.16);
+  }
+  .ws-checkbox-row label { text-transform: none; letter-spacing: normal;
+                            color: var(--rwaise-strong); font-weight: 500;
+                            font-size: 0.95rem; margin-bottom: 0; cursor: pointer; }
+
+  .ws-step-intro {
+    margin: -2px 0 18px;
+    padding: 16px 18px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(124,92,255,0.10), rgba(0,229,184,0.06));
+    border: 1px solid rgba(124,92,255,0.20);
+  }
+  .ws-step-intro h3 {
+    margin: 0; font-size: 1.18rem; font-weight: 700;
+    color: var(--rwaise-strong);
+  }
+  .ws-step-intro p {
+    color: var(--rwaise-muted); margin: 4px 0 0; line-height: 1.5;
+  }
+  .ws-tip {
+    margin: 18px 0 0;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: rgba(0,229,184,0.06);
+    border-left: 3px solid #62ffd2;
+    color: var(--rwaise-strong); font-size: 0.88rem; line-height: 1.45;
+  }
+  .ws-tip strong { color: #62ffd2; margin-right: 4px; }
+
+  .ws-actions {
+    display: flex; gap: 10px; margin-top: 22px;
+    padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .ws-actions .ws-spacer { flex: 1; }
+</style>
+
+{% set meta = step_meta if step_meta is defined else None %}
+{% if meta %}
+  <div class="ws-step-intro">
+    <h3>{{ meta.title }}</h3>
+    {% if meta.lede %}<p>{{ meta.lede }}</p>{% endif %}
+  </div>
+{% else %}
+  <h3 style="margin-top:0;">Step {{ current_step }}</h3>
+{% endif %}
+
+<form method="post"
+      action="{{ url_for('rwaise.wizard_step', n=current_step) }}"
+      enctype="multipart/form-data">
+  {{ form.hidden_tag() }}
+  <div class="ws-form-grid {% if meta and meta.two_col %}two-col{% endif %}">
+    {% for field in form if not field.type.endswith('HiddenField') %}
+      <div class="ws-field {% if field.type == 'BooleanField' %}ws-checkbox-row{% endif %}">
+        {% if field.type == 'BooleanField' %}
+          {{ field() }} {{ field.label }}
+        {% else %}
+          {{ field.label }}
+          {{ field() }}
+        {% endif %}
+        {% if field.errors %}
+          <span class="ws-error">{{ field.errors[0] }}</span>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+  {% if meta and meta.tip %}
+    <div class="ws-tip"><strong>Tip:</strong> {{ meta.tip|safe }}</div>
+  {% endif %}
+
+  <div class="ws-actions">
+    {% if current_step > 1 %}
+      <a class="rwaise-btn rwaise-btn-secondary"
+         href="{{ url_for('rwaise.wizard_step', n=current_step - 1) }}">&larr; Back</a>
+    {% endif %}
+    <span class="ws-spacer"></span>
+    <button class="rwaise-btn" type="submit">
+      {% if current_step == 9 %}Finalize &amp; broadcast{% else %}Save &amp; continue &rarr;{% endif %}
+    </button>
+  </div>
+</form>

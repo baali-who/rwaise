@@ -1,0 +1,10 @@
+{% extends "rwaise/wizard/shell.html" %}
+{% block wizard_step %}
+{% set step_meta = {
+  "title": "Step 5 · KYC & credential gates",
+  "lede": "Choose which XLS-65 layered credentials a wallet must hold to subscribe and trade. Marketplace + transfer hooks enforce these checks.",
+  "tip": "<em>Require accreditation</em> + <em>Require jurisdiction</em> together implement Reg D 506(c) — the most common RWA template in the U.S.",
+  "two_col": False,
+} %}
+{% include 'rwaise/wizard/_step_form.html' %}
+{% endblock %}

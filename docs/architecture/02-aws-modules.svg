@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1100" font-family="-apple-system,BlinkMacSystemFont,sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a1f"/>
+      <stop offset="100%" stop-color="#1a0d2e"/>
+    </linearGradient>
+    <linearGradient id="brand" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00e5b8"/>
+      <stop offset="60%" stop-color="#7c5cff"/>
+      <stop offset="100%" stop-color="#e5318a"/>
+    </linearGradient>
+    <marker id="aA" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L0,12 L12,6 z" fill="#62ffd2"/></marker>
+    <marker id="aP" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L0,12 L12,6 z" fill="#b896ff"/></marker>
+    <marker id="aPk" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L0,12 L12,6 z" fill="#ff7eb6"/></marker>
+    <marker id="aG" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L0,12 L12,6 z" fill="#ffd066"/></marker>
+  </defs>
+
+  <rect width="1600" height="1100" fill="url(#bg)"/>
+
+  <text x="800" y="52" text-anchor="middle" font-size="32" font-weight="800" fill="url(#brand)" letter-spacing="-1">AWS Module Map</text>
+  <text x="800" y="80" text-anchor="middle" font-size="14" fill="#aebbe0">Every AWS service RWAiSE touches, grouped by concern</text>
+  <rect x="600" y="92" width="400" height="2" fill="url(#brand)" rx="1"/>
+
+  <!-- ═══ Compute group ═══ -->
+  <rect x="40" y="120" width="500" height="280" rx="20" fill="rgba(0,229,184,0.05)" stroke="rgba(0,229,184,0.42)" stroke-width="1.5"/>
+  <text x="60" y="156" font-size="12" font-weight="700" fill="#62ffd2" letter-spacing="2">COMPUTE</text>
+
+  <g transform="translate(60,180)">
+    <rect width="220" height="100" rx="12" fill="rgba(15,16,48,0.55)" stroke="rgba(0,229,184,0.32)"/>
+    <text x="14" y="22" fill="#62ffd2" font-size="10" font-weight="700" letter-spacing="1">ECS · FARGATE</text>
+    <text x="14" y="42" fill="#f0f1ff" font-size="14" font-weight="700">gopnik-web service</text>
+    <text x="14" y="60" fill="#aebbe0" font-size="11">2 × (1 vCPU + 2 GB)</text>
+    <text x="14" y="76" fill="#aebbe0" font-size="11">awsvpc · private subnets</text>
+    <text x="14" y="92" fill="#aebbe0" font-size="11">Rolling deploys · zero downtime</text>
+  </g>
+  <g transform="translate(300,180)">
+    <rect width="220" height="100" rx="12" fill="rgba(15,16,48,0.55)" stroke="rgba(0,229,184,0.32)"/>
+    <text x="14" y="22" fill="#62ffd2" font-size="10" font-weight="700" letter-spacing="1">ECR</text>
+    <text x="14" y="42" fill="#f0f1ff" font-size="14" font-weight="700">Container registry</text>
+    <text x="14" y="60" fill="#aebbe0" font-size="11">Tag: gopnik:rwaise-vN.N.N</text>
+    <text x="14" y="76" fill="#aebbe0" font-size="11">Image scan on push</text>
+    <text x="14" y="92" fill="#aebbe0" font-size="11">Lifecycle policy: keep 10</text>
+  </g>
+  <g transform="translate(60,300)">
+    <rect width="460" height="80" rx="12" fill="rgba(15,16,48,0.55)" stroke="rgba(0,229,184,0.32)"/>
+    <text x="14" y="22" fill="#62ffd2" font-size="10" font-weight="700" letter-spacing="1">ALB · APPLICATION LOAD BALANCER</text>
+    <text x="14" y="42" fill="#f0f1ff" font-size="14" font-weight="700">gopnik-prod-alb</text>
+    <text x="14" y="60" fill="#aebbe0" font-size="11">HTTPS listener · ACM cert · WAF · sticky sessions</text>
+    <text x="14" y="76" fill="#aebbe0" font-size="11">/health check · 5xx CloudWatch alarm</text>
+  </g>
+
+  <!-- ═══ Storage group ═══ -->
+  <rect x="560" y="120" width="500" height="280" rx="20" fill="rgba(124,92,255,0.05)" stroke="rgba(124,92,255,0.42)" stroke-width="1.5"/>
+  <text x="580" y="156" font-size="12" font-weight="700" fill="#b896ff" letter-spacing="2">STATE</text>
+
+  <g transform="translate(580,180)">
+    <rect width="220" height="100" rx="12" fill="rgba(15,16,48,0.55)" stroke="rgba(124,92,255,0.32)"/>
+    <text x="14" y="22" fill="#b896ff" font-size="10" font-weight="700" letter-spacing="1">RDS · POSTGRES 15</text>
+    <text x="14" y="42" fill="#f0f1ff" font-size="14" font-weight="700">gopnik-prod (multi-AZ)</text>
+    <text x="14" y="60" fill="#aebbe0" font-size="11">db.t4g.medium · 50 GB encrypted</text>
+    <text x="14" y="76" fill="#aebbe0" font-size="11">7-day backups · pitr</text>
+    <text x="14" y="92" fill="#aebbe0" font-size="11">12 rwaise_* tables + ENUMs</text>
+  </g>
+  <g transform="translate(820,180)">
+    <rect width="220" height="100" rx="12" fill="rgba(15,16,48,0.55)" stroke="rgba(124,92,255,0.32)"/>
+    <text x="14" y="22" fill="#b896ff" font-size="10" font-weight="700" letter-spacing="1">ELASTICACHE · REDIS 7</text>
+    <text x="14" y="42" fill="#f0f1ff" font-size="14" font-weight="700">gopnik-prod (1+1 replica)</text>
+    <text x="14" y="60" fill="#aebbe0" font-size="11">cache.t4g.micro</text>
+    <text x="14" y="76" fill="#aebbe0" font-size="11">Feature flag cache (5 s TTL)</text>
+    <text x="14" y="92" fill="#aebbe0" font-size="11">flask-limiter store</text>
+  </g>
+  <g transform="translate(580,300)">
+    <rect width="460" height="80" rx="12" fill="rgba(15,16,48,0.55)" stroke="rgba(124,92,255,0.32)"/>
+    <text x="14" y="22" fill="#b896ff" font-size="10" font-weight="700" letter-spacing="1">S3 · STATIC + UPLOADS (optional)</text>
+    <text x="14" y="42" fill="#f0f1ff" font-size="14" font-weight="700">rwaise-uploads</text>
+    <text x="14" y="60" fill="#aebbe0" font-size="11">Cap-table CSVs · prospectus PDFs · MPT metadata JSON</text>
+    <text x="14" y="76" fill="#aebbe0" font-size="11">Server-side encryption (SSE-S3) · versioning ON</text>
+  </g>
+
+  <!-- ═══ AI group ═══ -->
+  <rect x="1080" y="120" width="480" height="280" rx="20" fill="rgba(229,49,138,0.05)" stroke="rgba(229,49,138,0.42)" stroke-width="1.5"/>
+  <text x="1100" y="156" font-size="12" font-weight="700" fill="#ff7eb6" letter-spacing="2">AI · BEDROCK</text>
+
+  <g transform="translate(1100,180)">
+    <rect width="440" height="100" rx="12" fill="rgba(15,16,48,0.55)" stroke="rgba(229,49,138,0.42)" stroke-width="1.5"/>
+    <text x="14" y="22" fill="#ff7eb6" font-size="10" font-weight="700" letter-spacing="1">BEDROCK RUNTIME</text>
+    <text x="14" y="42" fill="#f0f1ff" font-size="14" font-weight="700">anthropic.claude-sonnet-4-6</text>
+    <text x="14" y="60" fill="#aebbe0" font-size="11">Converse API · tool_use schemas</text>
+    <text x="14" y="76" fill="#aebbe0" font-size="11">Streaming · per-tenant capacity</text>
+    <text x="14" y="92" fill="#aebbe0" font-size="11">Region: eu-north-1 (model access requested)</text>
+  </g>
+  <g transform="translate(1100,300)">
+    <rect width="210" height="80" rx="12" fill="rgba(15,16,48,0.55)" stroke="rgba(229,49,138,0.32)"/>
+    <text x="14" y="22" fill="#ff7eb6" font-size="10" font-weight="700" letter-spacing="1">BEDROCK AGENT (alt)</text>
+    <text x="14" y="42" fill="#f0f1ff" font-size="13" font-weight="700">Lambda action group</text>
+    <text x="14" y="60" fill="#aebbe0" font-size="11">Optional path · iter-22</text>
+    <text x="14" y="76" fill="#aebbe0" font-size="11">Replaces hand-rolled loop</text>
+  </g>
+  <g transform="translate(1330,300)">
+    <rect width="210" height="80" rx="12" fill="rgba(15,16,48,0.55)" stroke="rgba(229,49,138,0.32)"/>
+    <text x="14" y="22" fill="#ff7eb6" font-size="10" font-weight="700" letter-spacing="1">BEDROCK GUARDRAILS</text>
+    <text x="14" y="42" fill="#f0f1ff" font-size="13" font-weight="700">Output filter (planned)</text>
+    <text x="14" y="60" fill="#aebbe0" font-size="11">Block PII · jailbreak attempts</text>
+    <text x="14" y="76" fill="#aebbe0" font-size="11">iter-23</text>
+  </g>
+
+  <!-- ═══ Security group ═══ -->
+  <rect x="40" y="430" width="760" height="200" rx="20" fill="rgba(255,208,102,0.05)" stroke="rgba(255,208,102,0.42)" stroke-width="1.5"/>
+  <text x="60" y="466" font-size="12" font-weight="700" fill="#ffd066" letter-spacing="2">SECURITY · IDENTITY</text>
+
+  <g transform="translate(60,490)">
+    <rect width="220" height="120" rx="12" fill="rgba(15,16,48,0.55)" stroke="rgba(255,208,102,0.32)"/>
+    <text x="14" y="22" fill="#ffd066" font-size="10" font-weight="700" letter-spacing="1">SECRETS MANAGER</text>
+    <text x="14" y="40" fill="#f0f1ff" font-size="13" font-weight="700">gopnik/* secrets</text>
+    <text x="14" y="58" fill="#aebbe0" font-size="11">- coinbase_api_key</text>
+    <text x="14" y="74" fill="#aebbe0" font-size="11">- coinbase_api_secret</text>
+    <text x="14" y="90" fill="#aebbe0" font-size="11">- db_password</text>
+    <text x="14" y="106" fill="#aebbe0" font-size="11">- flask_secret_key</text>
+  </g>
+  <g transform="translate(300,490)">
+    <rect width="220" height="120" rx="12" fill="rgba(15,16,48,0.55)" stroke="rgba(255,208,102,0.32)"/>
+    <text x="14" y="22" fill="#ffd066" font-size="10" font-weight="700" letter-spacing="1">KMS</text>
+    <text x="14" y="40" fill="#f0f1ff" font-size="13" font-weight="700">Customer-managed key</text>
+    <text x="14" y="58" fill="#aebbe0" font-size="11">- Encrypts Secrets Manager</text>
+    <text x="14" y="74" fill="#aebbe0" font-size="11">- Encrypts RDS at rest</text>
+    <text x="14" y="90" fill="#aebbe0" font-size="11">- Encrypts S3 SSE-KMS</text>
+    <text x="14" y="106" fill="#aebbe0" font-size="11">- (opt) wraps wallet seeds</text>
+  </g>
+  <g transform="translate(540,490)">
+    <rect width="240" height="120" rx="12" fill="rgba(15,16,48,0.55)" stroke="rgba(255,208,102,0.32)"/>
+    <text x="14" y="22" fill="#ffd066" font-size="10" font-weight="700" letter-spacing="1">IAM</text>
+    <text x="14" y="40" fill="#f0f1ff" font-size="13" font-weight="700">Roles &amp; policies</text>
+    <text x="14" y="58" fill="#aebbe0" font-size="11">ecsTaskExecutionRole · pull ECR + logs</text>
+    <text x="14" y="74" fill="#aebbe0" font-size="11">gopnik-task-role · Bedrock + Secrets</text>
+    <text x="14" y="90" fill="#aebbe0" font-size="11">least-privilege per env</text>
+    <text x="14" y="106" fill="#aebbe0" font-size="11">Access Analyzer review monthly</text>
+  </g>
+
+  <!-- ═══ Network group ═══ -->
+  <rect x="820" y="430" width="740" height="200" rx="20" fill="rgba(0,229,184,0.05)" stroke="rgba(0,229,184,0.32)" stroke-width="1.5"/>
+  <text x="840" y="466" font-size="12" font-weight="700" fill="#62ffd2" letter-spacing="2">NETWORK · EDGE</text>
+
+  <g transform="translate(840,490)">
+    <rect width="220" height="120" rx="12" fill="rgba(15,16,48,0.55)" stroke="rgba(0,229,184,0.32)"/>
+    <text x="14" y="22" fill="#62ffd2" font-size="10" font-weight="700" letter-spacing="1">VPC</text>
+    <text x="14" y="40" fill="#f0f1ff" font-size="13" font-weight="700">2 public + 2 private subnets</text>
+    <text x="14" y="58" fill="#aebbe0" font-size="11">2 AZs · NAT gateway</text>
+    <text x="14" y="74" fill="#aebbe0" font-size="11">VPC flow logs to CloudWatch</text>
+    <text x="14" y="90" fill="#aebbe0" font-size="11">Security groups:</text>
+    <text x="14" y="106" fill="#aebbe0" font-size="11">  alb / fargate / rds / redis</text>
+  </g>
+  <g transform="translate(1080,490)">
+    <rect width="220" height="120" rx="12" fill="rgba(15,16,48,0.55)" stroke="rgba(0,229,184,0.32)"/>
+    <text x="14" y="22" fill="#62ffd2" font-size="10" font-weight="700" letter-spacing="1">ROUTE 53</text>
+    <text x="14" y="40" fill="#f0f1ff" font-size="13" font-weight="700">DNS · gopnik.io</text>
+    <text x="14" y="58" fill="#aebbe0" font-size="11">A record → ALB</text>
+    <text x="14" y="74" fill="#aebbe0" font-size="11">CAA records pinned</text>
+    <text x="14" y="90" fill="#aebbe0" font-size="11">Health checks every 30 s</text>
+    <text x="14" y="106" fill="#aebbe0" font-size="11">Failover to maint page</text>
+  </g>
+  <g transform="translate(1320,490)">
+    <rect width="220" height="120" rx="12" fill="rgba(15,16,48,0.55)" stroke="rgba(0,229,184,0.32)"/>
+    <text x="14" y="22" fill="#62ffd2" font-size="10" font-weight="700" letter-spacing="1">CLOUDFRONT (planned)</text>
+    <text x="14" y="40" fill="#f0f1ff" font-size="13" font-weight="700">CDN + WAF</text>
+    <text x="14" y="58" fill="#aebbe0" font-size="11">iter-23: Lambda@Edge</text>
+    <text x="14" y="74" fill="#aebbe0" font-size="11">x402 facilitator at edge</text>
+    <text x="14" y="90" fill="#aebbe0" font-size="11">Rate limit 50 RPS / IP</text>
+    <text x="14" y="106" fill="#aebbe0" font-size="11">DDoS protection</text>
+  </g>
+
+  <!-- ═══ Observability group ═══ -->
+  <rect x="40" y="660" width="1520" height="200" rx="20" fill="rgba(124,92,255,0.05)" stroke="rgba(124,92,255,0.42)" stroke-width="1.5"/>
+  <text x="60" y="696" font-size="12" font-weight="700" fill="#b896ff" letter-spacing="2">OBSERVABILITY · OPERATIONS</text>
+
+  <g transform="translate(60,720)">
+    <rect width="280" height="120" rx="12" fill="rgba(15,16,48,0.55)" stroke="rgba(124,92,255,0.32)"/>
+    <text x="14" y="22" fill="#b896ff" font-size="10" font-weight="700" letter-spacing="1">CLOUDWATCH LOGS</text>
+    <text x="14" y="40" fill="#f0f1ff" font-size="13" font-weight="700">/ecs/gopnik-web</text>
+    <text x="14" y="58" fill="#aebbe0" font-size="11">Structured JSON · 30-day retention</text>
+    <text x="14" y="74" fill="#aebbe0" font-size="11">Insights queries on agent activity</text>
+    <text x="14" y="90" fill="#aebbe0" font-size="11">Subscription filter → S3 cold storage</text>
+    <text x="14" y="106" fill="#aebbe0" font-size="11">Per-iteration log groups for migrations</text>
+  </g>
+  <g transform="translate(360,720)">
+    <rect width="280" height="120" rx="12" fill="rgba(15,16,48,0.55)" stroke="rgba(124,92,255,0.32)"/>
+    <text x="14" y="22" fill="#b896ff" font-size="10" font-weight="700" letter-spacing="1">CLOUDWATCH METRICS</text>
+    <text x="14" y="40" fill="#f0f1ff" font-size="13" font-weight="700">Built-in + custom</text>
+    <text x="14" y="58" fill="#aebbe0" font-size="11">ALB 5xx rate · target health</text>
+    <text x="14" y="74" fill="#aebbe0" font-size="11">Fargate CPU/memory · RDS conn</text>
+    <text x="14" y="90" fill="#aebbe0" font-size="11">Custom: rwaise.agent.cost_usd</text>
+    <text x="14" y="106" fill="#aebbe0" font-size="11">Custom: rwaise.x402.payments</text>
+  </g>
+  <g transform="translate(660,720)">
+    <rect width="280" height="120" rx="12" fill="rgba(15,16,48,0.55)" stroke="rgba(124,92,255,0.32)"/>
+    <text x="14" y="22" fill="#b896ff" font-size="10" font-weight="700" letter-spacing="1">SNS · ALERTING</text>
+    <text x="14" y="40" fill="#f0f1ff" font-size="13" font-weight="700">PagerDuty + Slack</text>
+    <text x="14" y="58" fill="#aebbe0" font-size="11">P1: 5xx &gt; 1% for 5 min</text>
+    <text x="14" y="74" fill="#aebbe0" font-size="11">P2: Bedrock errors &gt; 10/min</text>
+    <text x="14" y="90" fill="#aebbe0" font-size="11">P3: agent cost &gt; $50/hour</text>
+    <text x="14" y="106" fill="#aebbe0" font-size="11">P4: feature flag DB drift</text>
+  </g>
+  <g transform="translate(960,720)">
+    <rect width="280" height="120" rx="12" fill="rgba(15,16,48,0.55)" stroke="rgba(124,92,255,0.32)"/>
+    <text x="14" y="22" fill="#b896ff" font-size="10" font-weight="700" letter-spacing="1">X-RAY (planned)</text>
+    <text x="14" y="40" fill="#f0f1ff" font-size="13" font-weight="700">Distributed tracing</text>
+    <text x="14" y="58" fill="#aebbe0" font-size="11">Request → Bedrock → Coinbase</text>
+    <text x="14" y="74" fill="#aebbe0" font-size="11">→ XRPL submission spans</text>
+    <text x="14" y="90" fill="#aebbe0" font-size="11">Service map for the 6 tools</text>
+    <text x="14" y="106" fill="#aebbe0" font-size="11">iter-24</text>
+  </g>
+  <g transform="translate(1260,720)">
+    <rect width="280" height="120" rx="12" fill="rgba(15,16,48,0.55)" stroke="rgba(124,92,255,0.32)"/>
+    <text x="14" y="22" fill="#b896ff" font-size="10" font-weight="700" letter-spacing="1">BACKUPS · DR</text>
+    <text x="14" y="40" fill="#f0f1ff" font-size="13" font-weight="700">RDS automated + manual</text>
+    <text x="14" y="58" fill="#aebbe0" font-size="11">Daily snapshots → S3 cross-region</text>
+    <text x="14" y="74" fill="#aebbe0" font-size="11">RTO 1 h · RPO 5 min</text>
+    <text x="14" y="90" fill="#aebbe0" font-size="11">Tested quarterly</text>
+    <text x="14" y="106" fill="#aebbe0" font-size="11">DR runbook in DEPLOYMENT.md</text>
+  </g>
+
+  <!-- ═══ Data flow arrows ═══ -->
+  <text x="40" y="900" font-size="12" font-weight="700" fill="#7c5cff" letter-spacing="2">DATA FLOWS · ARROWS</text>
+
+  <!-- ALB -> Fargate -->
+  <path d="M170,300 L170,280" stroke="#62ffd2" stroke-width="2" fill="none" marker-end="url(#aA)"/>
+  <text x="180" y="290" font-size="9" fill="#62ffd2">port 5000</text>
+
+  <!-- Fargate -> RDS -->
+  <path d="M170,180 L170,160 C 170,140 690,140 690,180" stroke="#b896ff" stroke-width="1.5" fill="none" marker-end="url(#aP)"/>
+  <text x="430" y="135" font-size="9" fill="#b896ff" text-anchor="middle">SQL (5432)</text>
+
+  <!-- Fargate -> Redis -->
+  <path d="M250,180 L250,160 C 250,140 930,140 930,180" stroke="#b896ff" stroke-width="1.5" fill="none" marker-end="url(#aP)"/>
+
+  <!-- Fargate -> Bedrock -->
+  <path d="M280,225 C 700,225 1100,225 1100,225" stroke="#ff7eb6" stroke-width="1.5" fill="none" marker-end="url(#aPk)"/>
+  <text x="700" y="216" font-size="9" fill="#ff7eb6" text-anchor="middle">converse() over IAM-signed HTTPS</text>
+
+  <!-- Fargate -> Secrets Manager -->
+  <path d="M170,280 L170,490" stroke="#ffd066" stroke-width="1.5" fill="none" marker-end="url(#aG)"/>
+  <text x="180" y="380" font-size="9" fill="#ffd066">GetSecretValue at boot + every 24 h</text>
+
+  <!-- Fargate -> CloudWatch Logs -->
+  <path d="M120,280 C 120,540 200,720 200,720" stroke="#b896ff" stroke-width="1.5" fill="none" marker-end="url(#aP)"/>
+  <text x="60" y="500" font-size="9" fill="#b896ff">awslogs driver</text>
+
+  <text x="40" y="1080" font-size="11" fill="#7d89aa">github.com/baali-who/rwaise · MIT · iter-21</text>
+  <text x="1560" y="1080" text-anchor="end" font-size="11" fill="#7d89aa">RWAiSE · AWS Modules · 2026</text>
+</svg>

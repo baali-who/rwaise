@@ -1,0 +1,10 @@
+{% extends "rwaise/wizard/shell.html" %}
+{% block wizard_step %}
+{% set step_meta = {
+  "title": "Step 3 · Documents",
+  "lede": "Attach the legal documentation. The Bedrock co-pilot can review uploads for missing signatures, redaction issues and Reg-D red flags.",
+  "tip": "All uploads are stored encrypted at rest. Hashes are pinned on-chain at finalize time so the prospectus version is provable forever.",
+  "two_col": False,
+} %}
+{% include 'rwaise/wizard/_step_form.html' %}
+{% endblock %}

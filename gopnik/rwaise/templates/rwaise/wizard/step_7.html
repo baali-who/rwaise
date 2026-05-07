@@ -1,0 +1,10 @@
+{% extends "rwaise/wizard/shell.html" %}
+{% block wizard_step %}
+{% set step_meta = {
+  "title": "Step 7 · Cap table",
+  "lede": "Upload your investor list as CSV. Required columns: <code>email,wallet,units,jurisdiction,accredited</code>. Rows are validated against KYC + sanctions.",
+  "tip": "Soft-flag threshold marks any single-holder allocation above N units for compliance review without rejecting the row outright.",
+  "two_col": True,
+} %}
+{% include 'rwaise/wizard/_step_form.html' %}
+{% endblock %}

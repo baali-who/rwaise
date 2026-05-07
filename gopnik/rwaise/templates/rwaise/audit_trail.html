@@ -1,0 +1,142 @@
+{% extends "rwaise/_base.html" %}
+{% block title %}Audit trail — RWAiSE{% endblock %}
+
+{% block head %}
+{{ super() }}
+<style>
+  .at-toolbar {
+    display: flex; gap: 14px; align-items: center;
+    margin: 0 0 18px;
+    padding: 12px 16px;
+    background: rgba(15,16,48,0.50);
+    border: 1px solid rgba(124,92,255,0.18);
+    border-radius: 12px;
+  }
+  .at-toolbar input, .at-toolbar select {
+    padding: 8px 12px; border-radius: 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(124,92,255,0.22);
+    color: var(--rwaise-strong);
+    font-size: 0.86rem;
+  }
+  .at-toolbar input { flex: 1; }
+
+  .at-table-wrap {
+    background: rgba(15,16,48,0.50);
+    border: 1px solid rgba(124,92,255,0.16);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .at-action {
+    display: inline-block;
+    padding: 3px 10px; border-radius: 999px;
+    font-size: 0.72rem; font-weight: 700;
+    background: rgba(124,92,255,0.16); color: #d4cdff;
+    border: 1px solid rgba(124,92,255,0.28);
+    text-transform: lowercase;
+    letter-spacing: 0.04em;
+  }
+  .at-action.create     { background: rgba(0,229,184,0.14); color: #62ffd2;
+                           border-color: rgba(0,229,184,0.32); }
+  .at-action.lock       { background: rgba(255,208,102,0.10); color: #ffd066;
+                           border-color: rgba(255,208,102,0.26); }
+  .at-action.clawback   { background: rgba(255,107,139,0.10); color: #ff8aa3;
+                           border-color: rgba(255,107,139,0.26); }
+  .at-action.redeem     { background: rgba(229,49,138,0.12); color: #ff7eb6;
+                           border-color: rgba(229,49,138,0.28); }
+
+  .at-empty { padding: 60px; text-align: center; color: var(--rwaise-muted); }
+  .at-empty h3 { color: var(--rwaise-strong); margin-bottom: 8px; }
+</style>
+{% endblock %}
+
+{% block rwaise_content %}
+<div class="rwaise-page-header">
+  <h1>Audit trail</h1>
+  <span class="pill">{{ (events or [])|length }} events</span>
+</div>
+<p style="color: var(--rwaise-muted); margin-bottom: 18px;">
+  Append-only log of every state-changing action across every issuance. Each row links to the
+  XRPL explorer when an on-ledger tx hash is present.
+</p>
+
+<div class="at-toolbar">
+  <input id="at-q" type="search" placeholder="Filter by action, issuance, actor…">
+  <select id="at-action-filter">
+    <option value="">All actions</option>
+    <option value="create">create</option>
+    <option value="authorize">authorize</option>
+    <option value="distribute">distribute</option>
+    <option value="lock">lock</option>
+    <option value="clawback">clawback</option>
+    <option value="redeem">redeem</option>
+  </select>
+</div>
+
+<div class="at-table-wrap">
+  <table class="rwaise-table">
+    <thead>
+      <tr>
+        <th>When</th>
+        <th>Action</th>
+        <th>Issuance</th>
+        <th>Actor</th>
+        <th>Tx hash</th>
+      </tr>
+    </thead>
+    <tbody id="at-tbody">
+      {% for ev in events or [] %}
+        {% set act = (ev.action or "")|lower %}
+        <tr data-action="{{ act }}"
+            data-search="{{ act }} {{ ev.issuance_id|default('') }} {{ ev.actor_user_id|default('') }} {{ ev.tx_hash|default('') }}">
+          <td style="color: var(--rwaise-muted); white-space: nowrap; font-size: 0.86rem;">
+            {{ ev.created_at.strftime("%Y-%m-%d %H:%M:%S") if ev.created_at else "—" }}
+          </td>
+          <td>
+            <span class="at-action {{ act }}">{{ act or "—" }}</span>
+          </td>
+          <td style="font-family: ui-monospace, monospace; font-size: 0.84rem;">
+            #{{ ev.issuance_id or "—" }}
+          </td>
+          <td style="color: var(--rwaise-muted); font-size: 0.86rem;">
+            {{ ev.actor_user_id or "—" }}
+          </td>
+          <td>
+            {% if ev.tx_hash %}
+              <code style="font-size: 0.78rem;">{{ ev.tx_hash[:12] }}…{{ ev.tx_hash[-6:] }}</code>
+            {% else %}
+              <span style="color: var(--rwaise-muted); font-size: 0.82rem;">—</span>
+            {% endif %}
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="5"><div class="at-empty">
+          <h3>No events yet</h3>
+          <p>The audit log fills as issuances are created, distributed, locked, clawed back, or redeemed.</p>
+        </div></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<script>
+(() => {
+  const q = document.getElementById("at-q");
+  const filter = document.getElementById("at-action-filter");
+  const tbody = document.getElementById("at-tbody");
+  if (!q || !filter || !tbody) return;
+  const apply = () => {
+    const term = q.value.trim().toLowerCase();
+    const act  = filter.value;
+    tbody.querySelectorAll("tr[data-action]").forEach(row => {
+      const hay = (row.dataset.search || "").toLowerCase();
+      const okT = !term || hay.includes(term);
+      const okA = !act  || row.dataset.action === act;
+      row.style.display = (okT && okA) ? "" : "none";
+    });
+  };
+  q.addEventListener("input", apply);
+  filter.addEventListener("change", apply);
+})();
+</script>
+{% endblock %}

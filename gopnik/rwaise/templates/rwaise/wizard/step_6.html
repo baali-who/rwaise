@@ -1,0 +1,10 @@
+{% extends "rwaise/wizard/shell.html" %}
+{% block wizard_step %}
+{% set step_meta = {
+  "title": "Step 6 · Token parameters",
+  "lede": "These map 1:1 to <code>MPTokenIssuanceCreate</code> on the XRP Ledger. The co-pilot can suggest defaults from the asset class — click it on the right.",
+  "tip": "Symbol must be 2–10 uppercase letters/digits. Asset scale is the number of decimal places — use 2 for fiat-pegged debt, 6 for fungible commodities.",
+  "two_col": True,
+} %}
+{% include 'rwaise/wizard/_step_form.html' %}
+{% endblock %}

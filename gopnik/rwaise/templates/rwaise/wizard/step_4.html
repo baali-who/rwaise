@@ -1,0 +1,10 @@
+{% extends "rwaise/wizard/shell.html" %}
+{% block wizard_step %}
+{% set step_meta = {
+  "title": "Step 4 · Valuation",
+  "lede": "Your independent valuation drives the per-token offering price and the redemption-NAV calculation in step 8.",
+  "tip": "Target APY is informational on the marketplace listing — actual yield is paid via on-ledger distributions in your preferred quote currency.",
+  "two_col": True,
+} %}
+{% include 'rwaise/wizard/_step_form.html' %}
+{% endblock %}

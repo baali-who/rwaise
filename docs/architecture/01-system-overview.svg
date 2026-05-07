@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif">
+  <!-- ═════════════════════════════════════════════════════════════
+       RWAiSE · System Overview · iter-21
+       ═════════════════════════════════════════════════════════════ -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a1f"/>
+      <stop offset="100%" stop-color="#1a0d2e"/>
+    </linearGradient>
+    <linearGradient id="brand" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#00e5b8"/>
+      <stop offset="60%"  stop-color="#7c5cff"/>
+      <stop offset="100%" stop-color="#e5318a"/>
+    </linearGradient>
+    <linearGradient id="userL" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#7c5cff" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#7c5cff" stop-opacity="0.04"/>
+    </linearGradient>
+    <linearGradient id="appL" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00e5b8" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#00e5b8" stop-opacity="0.04"/>
+    </linearGradient>
+    <linearGradient id="extL" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e5318a" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#e5318a" stop-opacity="0.04"/>
+    </linearGradient>
+    <linearGradient id="ledgerL" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffd066" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#ffd066" stop-opacity="0.04"/>
+    </linearGradient>
+
+    <marker id="arrowAqua" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L0,12 L12,6 z" fill="#62ffd2"/></marker>
+    <marker id="arrowPink" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L0,12 L12,6 z" fill="#ff7eb6"/></marker>
+    <marker id="arrowPurp" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L0,12 L12,6 z" fill="#b896ff"/></marker>
+    <marker id="arrowGold" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L0,12 L12,6 z" fill="#ffd066"/></marker>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+
+  <!-- Title -->
+  <text x="800" y="56" text-anchor="middle" font-size="32" font-weight="800" fill="url(#brand)" letter-spacing="-1">RWAiSE · System Overview</text>
+  <text x="800" y="86" text-anchor="middle" font-size="14" fill="#aebbe0">User browser → Gopnik plugin → AWS &amp; Coinbase → XRP Ledger</text>
+  <rect x="600" y="100" width="400" height="2" fill="url(#brand)" rx="1"/>
+
+  <!-- Lane labels -->
+  <text x="80"   y="140" fill="#7c5cff" font-size="11" font-weight="700" letter-spacing="2">CLIENT</text>
+  <text x="430"  y="140" fill="#62ffd2" font-size="11" font-weight="700" letter-spacing="2">GOPNIK · RWAISE PLUGIN (Flask)</text>
+  <text x="900"  y="140" fill="#ff7eb6" font-size="11" font-weight="700" letter-spacing="2">EXTERNAL · AWS &amp; COINBASE</text>
+  <text x="1320" y="140" fill="#ffd066" font-size="11" font-weight="700" letter-spacing="2">XRP LEDGER</text>
+
+  <!-- ═══ Client lane ═══ -->
+  <rect x="40" y="160" width="320" height="700" rx="20" fill="url(#userL)" stroke="rgba(124,92,255,0.42)" stroke-width="1.5"/>
+  <text x="60" y="200" font-size="17" font-weight="700" fill="#f0f1ff">Wallet UI · Bootstrap 5</text>
+  <text x="60" y="222" font-size="12" fill="#aebbe0">/rwaise/agent · /wizard · /marketplace</text>
+
+  <!-- Browser mock -->
+  <g transform="translate(60,250)">
+    <rect width="280" height="120" rx="10" fill="#06061a" stroke="rgba(124,92,255,0.32)"/>
+    <circle cx="14" cy="16" r="4" fill="#ff7eb6"/>
+    <circle cx="28" cy="16" r="4" fill="#ffd066"/>
+    <circle cx="42" cy="16" r="4" fill="#62ffd2"/>
+    <text x="14" y="50" font-size="11" fill="#aebbe0">"Should I buy XRP?"</text>
+    <rect x="14" y="60" width="180" height="20" rx="10" fill="rgba(124,92,255,0.14)"/>
+    <text x="104" y="74" font-size="9" font-weight="600" fill="#d4cdff" text-anchor="middle">type message + Send</text>
+    <text x="14" y="100" font-size="10" fill="#62ffd2">Markdown reply renders</text>
+  </g>
+
+  <!-- Browser-side JS -->
+  <g transform="translate(60,400)">
+    <rect width="280" height="80" rx="10" fill="rgba(6,6,26,0.55)" stroke="rgba(124,92,255,0.28)"/>
+    <text x="14" y="22" fill="#b896ff" font-size="10" font-weight="700" letter-spacing="1">STATIC JS</text>
+    <text x="14" y="42" fill="#f0f1ff" font-size="13" font-weight="700">/rwaise/static/js/agent_chat.js</text>
+    <text x="14" y="58" fill="#aebbe0" font-size="11">Markdown renderer · CSP-safe</text>
+    <text x="14" y="72" fill="#aebbe0" font-size="11">Form locking · budget badge · reset</text>
+  </g>
+
+  <!-- Other surfaces -->
+  <g transform="translate(60,510)">
+    <rect width="280" height="100" rx="10" fill="rgba(6,6,26,0.55)" stroke="rgba(124,92,255,0.28)"/>
+    <text x="14" y="22" fill="#b896ff" font-size="10" font-weight="700" letter-spacing="1">OTHER SURFACES</text>
+    <text x="14" y="42" fill="#f0f1ff" font-size="12">🪄 Tokenization wizard · /rwaise/wizard</text>
+    <text x="14" y="60" fill="#f0f1ff" font-size="12">🏛 Marketplace · /rwaise/marketplace</text>
+    <text x="14" y="78" fill="#f0f1ff" font-size="12">💼 My holdings · /rwaise/holdings</text>
+    <text x="14" y="96" fill="#f0f1ff" font-size="12">⚙️ Admin · /rwaise/admin/*</text>
+  </g>
+
+  <!-- ═══ Plugin lane ═══ -->
+  <rect x="380" y="160" width="500" height="700" rx="20" fill="url(#appL)" stroke="rgba(0,229,184,0.42)" stroke-width="1.5"/>
+  <text x="400" y="200" font-size="17" font-weight="700" fill="#f0f1ff">register_plugin(app)</text>
+  <text x="400" y="220" font-size="12" fill="#aebbe0">env-var floor → DB toggle → Redis cache</text>
+
+  <!-- Routes blueprint -->
+  <g transform="translate(400,250)">
+    <rect width="460" height="64" rx="10" fill="rgba(6,6,26,0.55)" stroke="rgba(124,92,255,0.32)"/>
+    <text x="14" y="22" fill="#b896ff" font-size="10" font-weight="700" letter-spacing="1">BLUEPRINT</text>
+    <text x="14" y="42" fill="#f0f1ff" font-size="13" font-weight="700">routes.py · rwaise_bp /rwaise/*</text>
+    <text x="14" y="58" fill="#aebbe0" font-size="11">home · marketplace · holdings · audit · admin</text>
+  </g>
+
+  <!-- Bedrock orchestrator -->
+  <g transform="translate(400,330)">
+    <rect width="460" height="120" rx="12" fill="rgba(6,6,26,0.55)" stroke="rgba(0,229,184,0.42)" stroke-width="1.5"/>
+    <text x="14" y="22" fill="#62ffd2" font-size="10" font-weight="700" letter-spacing="1.5">AI ORCHESTRATOR</text>
+    <text x="14" y="44" fill="#f0f1ff" font-size="14" font-weight="700">agents/orchestrator.py</text>
+    <text x="14" y="62" fill="#aebbe0" font-size="11">Bedrock Converse API · tool_use loop · ≤6 turns</text>
+    <text x="14" y="78" fill="#aebbe0" font-size="11">Falls back to rule-based if boto3 missing</text>
+    <text x="14" y="96" fill="#aebbe0" font-size="11">agents/tools.py · 6 tool schemas + dispatch</text>
+    <text x="14" y="112" fill="#aebbe0" font-size="11">agents/wallet_payer.py · x402 Payer + caps</text>
+  </g>
+
+  <!-- Wizard -->
+  <g transform="translate(400,470)">
+    <rect width="220" height="100" rx="10" fill="rgba(6,6,26,0.55)" stroke="rgba(124,92,255,0.32)"/>
+    <text x="14" y="20" fill="#b896ff" font-size="10" font-weight="700" letter-spacing="1.5">TOKENIZATION WIZARD</text>
+    <text x="14" y="40" fill="#f0f1ff" font-size="13" font-weight="700">wizard_controller.py</text>
+    <text x="14" y="56" fill="#aebbe0" font-size="11">9 steps · Flask session-backed</text>
+    <text x="14" y="72" fill="#aebbe0" font-size="11">forms.py · WTForms classes</text>
+    <text x="14" y="88" fill="#aebbe0" font-size="11">Embedded co-pilot per step</text>
+  </g>
+
+  <!-- x402 -->
+  <g transform="translate(640,470)">
+    <rect width="220" height="100" rx="10" fill="rgba(6,6,26,0.55)" stroke="rgba(229,49,138,0.32)"/>
+    <text x="14" y="20" fill="#ff7eb6" font-size="10" font-weight="700" letter-spacing="1.5">x402 PROTOCOL</text>
+    <text x="14" y="40" fill="#f0f1ff" font-size="13" font-weight="700">x402/middleware.py</text>
+    <text x="14" y="56" fill="#aebbe0" font-size="11">@x402_protected decorator</text>
+    <text x="14" y="72" fill="#aebbe0" font-size="11">facilitator.py · verify proofs</text>
+    <text x="14" y="88" fill="#aebbe0" font-size="11">client.py · pay_and_retry</text>
+  </g>
+
+  <!-- Models -->
+  <g transform="translate(400,590)">
+    <rect width="220" height="80" rx="10" fill="rgba(6,6,26,0.55)" stroke="rgba(124,92,255,0.32)"/>
+    <text x="14" y="20" fill="#b896ff" font-size="10" font-weight="700" letter-spacing="1.5">MODELS · SQLALCHEMY</text>
+    <text x="14" y="40" fill="#f0f1ff" font-size="12" font-weight="700">MPTIssuance · MPTHolder</text>
+    <text x="14" y="56" fill="#aebbe0" font-size="11">RedemptionTicket</text>
+    <text x="14" y="72" fill="#aebbe0" font-size="11">FeatureFlagAudit · AuditLog</text>
+  </g>
+
+  <!-- Admin / feature flags -->
+  <g transform="translate(640,590)">
+    <rect width="220" height="80" rx="10" fill="rgba(6,6,26,0.55)" stroke="rgba(255,208,102,0.32)"/>
+    <text x="14" y="20" fill="#ffd066" font-size="10" font-weight="700" letter-spacing="1.5">ADMIN · FEATURE FLAGS</text>
+    <text x="14" y="40" fill="#f0f1ff" font-size="12" font-weight="700">11 sub-flags · master switch</text>
+    <text x="14" y="56" fill="#aebbe0" font-size="11">3-layer cascade · 5 s prop</text>
+    <text x="14" y="72" fill="#aebbe0" font-size="11">audit-trailed actor + reason</text>
+  </g>
+
+  <!-- Audit + Developer Portal -->
+  <g transform="translate(400,690)">
+    <rect width="460" height="60" rx="10" fill="rgba(6,6,26,0.55)" stroke="rgba(255,255,255,0.10)"/>
+    <text x="14" y="22" fill="#aebbe0" font-size="11" font-weight="700" letter-spacing="1.5">📜 AUDIT TRAIL · /rwaise/admin/audit-trail</text>
+    <text x="14" y="42" fill="#aebbe0" font-size="11">append-only · every state change · USD cost · tx hash</text>
+  </g>
+  <g transform="translate(400,760)">
+    <rect width="460" height="60" rx="10" fill="rgba(6,6,26,0.55)" stroke="rgba(255,255,255,0.10)"/>
+    <text x="14" y="22" fill="#aebbe0" font-size="11" font-weight="700" letter-spacing="1.5">🔌 DEVELOPER PORTAL API · /rwaise/api/*</text>
+    <text x="14" y="42" fill="#aebbe0" font-size="11">OAuth 2.0 client_credentials · paid public API · x402 fallback</text>
+  </g>
+
+  <!-- ═══ External lane ═══ -->
+  <rect x="900" y="160" width="380" height="700" rx="20" fill="url(#extL)" stroke="rgba(229,49,138,0.42)" stroke-width="1.5"/>
+
+  <!-- Bedrock -->
+  <g transform="translate(920,200)">
+    <rect width="340" height="120" rx="14" fill="rgba(6,6,26,0.55)" stroke="rgba(0,229,184,0.42)" stroke-width="1.5"/>
+    <text x="14" y="22" fill="#62ffd2" font-size="11" font-weight="700" letter-spacing="2">AWS · BEDROCK</text>
+    <text x="14" y="46" fill="#f0f1ff" font-size="16" font-weight="700">Bedrock Runtime</text>
+    <text x="14" y="68" fill="#aebbe0" font-size="11">eu-north-1 · Claude Sonnet 4.6</text>
+    <text x="14" y="84" fill="#aebbe0" font-size="11">Converse API · tool_use schemas</text>
+    <text x="14" y="100" fill="#aebbe0" font-size="11">Per-tenant capacity · streaming</text>
+    <text x="14" y="116" fill="#aebbe0" font-size="11">Cost ~$0.003 per chat turn</text>
+  </g>
+
+  <!-- AWS support services -->
+  <g transform="translate(920,340)">
+    <rect width="340" height="100" rx="14" fill="rgba(6,6,26,0.55)" stroke="rgba(124,92,255,0.32)"/>
+    <text x="14" y="22" fill="#b896ff" font-size="11" font-weight="700" letter-spacing="2">AWS · MANAGED INFRA</text>
+    <text x="14" y="42" fill="#f0f1ff" font-size="13" font-weight="700">Secrets Manager · KMS</text>
+    <text x="14" y="58" fill="#aebbe0" font-size="11">Coinbase keys · DB pwd · Flask secret</text>
+    <text x="14" y="76" fill="#f0f1ff" font-size="13" font-weight="700">CloudWatch Logs</text>
+    <text x="14" y="92" fill="#aebbe0" font-size="11">Structured JSON · alarms on 5xx</text>
+  </g>
+
+  <!-- Coinbase free -->
+  <g transform="translate(920,460)">
+    <rect width="340" height="100" rx="14" fill="rgba(6,6,26,0.55)" stroke="rgba(229,49,138,0.42)" stroke-width="1.5"/>
+    <text x="14" y="22" fill="#ff7eb6" font-size="11" font-weight="700" letter-spacing="2">COINBASE · PUBLIC</text>
+    <text x="14" y="46" fill="#f0f1ff" font-size="15" font-weight="700">Advanced Trade API</text>
+    <text x="14" y="64" fill="#aebbe0" font-size="11">api.coinbase.com/api/v3/brokerage</text>
+    <text x="14" y="80" fill="#aebbe0" font-size="11">/market/products/{id}/ticker (public)</text>
+    <text x="14" y="96" fill="#aebbe0" font-size="11">No auth · 10 RPS · 30s in-process cache</text>
+  </g>
+
+  <!-- Coinbase auth + Exchange -->
+  <g transform="translate(920,580)">
+    <rect width="340" height="100" rx="14" fill="rgba(6,6,26,0.55)" stroke="rgba(229,49,138,0.42)"/>
+    <text x="14" y="22" fill="#ff7eb6" font-size="11" font-weight="700" letter-spacing="2">COINBASE · AUTHENTICATED</text>
+    <text x="14" y="42" fill="#f0f1ff" font-size="13" font-weight="700">Exchange API · candles</text>
+    <text x="14" y="58" fill="#aebbe0" font-size="11">api.exchange.coinbase.com/products/...</text>
+    <text x="14" y="76" fill="#f0f1ff" font-size="13" font-weight="700">CDP · HMAC SHA-256 OR JWT ES256</text>
+    <text x="14" y="92" fill="#aebbe0" font-size="11">CB-ACCESS-* headers / Bearer JWT</text>
+  </g>
+
+  <!-- x402 facilitator -->
+  <g transform="translate(920,700)">
+    <rect width="340" height="120" rx="14" fill="rgba(6,6,26,0.55)" stroke="rgba(255,208,102,0.42)" stroke-width="1.5"/>
+    <text x="14" y="22" fill="#ffd066" font-size="11" font-weight="700" letter-spacing="2">x402 FACILITATOR (OPTIONAL)</text>
+    <text x="14" y="42" fill="#f0f1ff" font-size="13" font-weight="700">/api/v1/coindesk-proxy</text>
+    <text x="14" y="58" fill="#aebbe0" font-size="11">Wraps premium endpoints with HTTP 402</text>
+    <text x="14" y="74" fill="#aebbe0" font-size="11">Verifies XRPL Payment proofs</text>
+    <text x="14" y="90" fill="#aebbe0" font-size="11">Forwards to CoinDesk premium</text>
+    <text x="14" y="108" fill="#62ffd2" font-size="11">Synthetic mode = real momentum signal</text>
+  </g>
+
+  <!-- ═══ XRPL lane ═══ -->
+  <rect x="1300" y="160" width="260" height="700" rx="20" fill="url(#ledgerL)" stroke="rgba(255,208,102,0.42)" stroke-width="1.5"/>
+  <text x="1320" y="200" font-size="22" font-weight="800" fill="#f0f1ff">XRPL</text>
+  <text x="1320" y="222" font-size="12" fill="#aebbe0">submit_and_wait · autofill</text>
+  <text x="1320" y="238" font-size="11" fill="#aebbe0">~3-5 s finality</text>
+
+  <g transform="translate(1320,260)">
+    <text x="0" y="20" fill="#ffd066" font-size="11" font-weight="700">XLS-33</text>
+    <text x="0" y="36" fill="#aebbe0" font-size="10">Multi-Purpose Tokens</text>
+    <text x="0" y="50" fill="#aebbe0" font-size="10">MPTokenIssuanceCreate</text>
+  </g>
+  <g transform="translate(1320,330)">
+    <text x="0" y="20" fill="#ffd066" font-size="11" font-weight="700">XLS-65</text>
+    <text x="0" y="36" fill="#aebbe0" font-size="10">Layered credentials</text>
+    <text x="0" y="50" fill="#aebbe0" font-size="10">verify on every transfer</text>
+  </g>
+  <g transform="translate(1320,400)">
+    <text x="0" y="20" fill="#ffd066" font-size="11" font-weight="700">XLS-66</text>
+    <text x="0" y="36" fill="#aebbe0" font-size="10">Permissioned DEX</text>
+    <text x="0" y="50" fill="#aebbe0" font-size="10">order book matching</text>
+  </g>
+  <g transform="translate(1320,470)">
+    <text x="0" y="20" fill="#ffd066" font-size="11" font-weight="700">XLS-71</text>
+    <text x="0" y="36" fill="#aebbe0" font-size="10">ODL routing</text>
+    <text x="0" y="50" fill="#aebbe0" font-size="10">cross-currency settle</text>
+  </g>
+  <g transform="translate(1320,540)">
+    <text x="0" y="20" fill="#ffd066" font-size="11" font-weight="700">x402 settle</text>
+    <text x="0" y="36" fill="#aebbe0" font-size="10">Payment in drops</text>
+    <text x="0" y="50" fill="#aebbe0" font-size="10">~$0.000001 fee</text>
+  </g>
+  <g transform="translate(1320,610)">
+    <text x="0" y="20" fill="#ffd066" font-size="11" font-weight="700">Wallets</text>
+    <text x="0" y="36" fill="#aebbe0" font-size="10">WalletUser table</text>
+    <text x="0" y="50" fill="#aebbe0" font-size="10">classic addresses + seeds</text>
+  </g>
+  <g transform="translate(1320,680)">
+    <text x="0" y="20" fill="#ffd066" font-size="11" font-weight="700">Live network</text>
+    <text x="0" y="36" fill="#aebbe0" font-size="10">xrplcluster.com</text>
+    <text x="0" y="50" fill="#aebbe0" font-size="10">+ devnet / testnet seam</text>
+  </g>
+
+  <!-- Arrows -->
+  <!-- User → Plugin -->
+  <path d="M340,310 C 360,310 370,310 400,310" stroke="#62ffd2" stroke-width="2.5" fill="none" marker-end="url(#arrowAqua)"/>
+  <text x="370" y="302" font-size="9" font-weight="700" fill="#62ffd2" text-anchor="middle">POST /chat</text>
+
+  <!-- Plugin Bedrock orchestrator → AWS Bedrock -->
+  <path d="M860,390 C 880,390 900,260 920,260" stroke="#62ffd2" stroke-width="2.5" fill="none" marker-end="url(#arrowAqua)"/>
+  <text x="884" y="320" font-size="9" font-weight="700" fill="#62ffd2" text-anchor="middle">converse()</text>
+
+  <path d="M920,280 C 900,280 880,400 860,400" stroke="#62ffd2" stroke-width="2.5" stroke-dasharray="4,3" fill="none" marker-end="url(#arrowAqua)"/>
+
+  <!-- Tool calls → Coinbase -->
+  <path d="M860,420 C 890,420 900,510 920,510" stroke="#ff7eb6" stroke-width="2" fill="none" marker-end="url(#arrowPink)"/>
+  <text x="888" y="468" font-size="9" font-weight="700" fill="#ff7eb6" text-anchor="middle">spot/candles</text>
+
+  <!-- Plugin → Secrets Manager -->
+  <path d="M860,360 C 890,360 900,380 920,380" stroke="#b896ff" stroke-width="2" stroke-dasharray="3,3" fill="none" marker-end="url(#arrowPurp)"/>
+  <text x="890" y="354" font-size="9" font-weight="700" fill="#b896ff" text-anchor="middle">resolve secrets</text>
+
+  <!-- x402 → facilitator -->
+  <path d="M860,520 C 890,520 900,750 920,750" stroke="#ffd066" stroke-width="2" fill="none" marker-end="url(#arrowGold)"/>
+  <text x="890" y="640" font-size="9" font-weight="700" fill="#ffd066" text-anchor="middle">x402 GET</text>
+
+  <!-- Wallet pay → XRPL -->
+  <path d="M1260,750 C 1290,750 1310,540 1300,540" stroke="#ffd066" stroke-width="2" fill="none" marker-end="url(#arrowGold)"/>
+  <text x="1280" y="650" font-size="9" font-weight="700" fill="#ffd066" text-anchor="middle">XRPL Payment</text>
+
+  <!-- Plugin → XRPL direct -->
+  <path d="M860,610 C 1100,610 1180,310 1300,310" stroke="#ffd066" stroke-width="2.5" fill="none" marker-end="url(#arrowGold)"/>
+  <text x="1080" y="450" font-size="9" font-weight="700" fill="#ffd066" text-anchor="middle">propose / confirm</text>
+
+  <!-- Footer -->
+  <text x="40" y="980" font-size="11" fill="#7d89aa">github.com/baali-who/rwaise · MIT · iter-21</text>
+  <text x="1560" y="980" text-anchor="end" font-size="11" fill="#7d89aa">RWAiSE · System Overview · 2026</text>
+</svg>

@@ -1,0 +1,132 @@
+{% extends "rwaise/_base.html" %}
+{% block title %}Listing #{{ listing_id }} — RWAiSE{% endblock %}
+
+{% block head %}
+{{ super() }}
+<style>
+  .ld-grid { display: grid; gap: 18px; grid-template-columns: 2fr 1fr; }
+  @media (max-width: 880px) { .ld-grid { grid-template-columns: 1fr; } }
+  .ld-stat-row {
+    display: grid; gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    margin-bottom: 18px;
+  }
+  .ld-stat {
+    background: rgba(15,16,48,0.55);
+    border: 1px solid rgba(124,92,255,0.18);
+    border-radius: 12px; padding: 14px 16px;
+  }
+  .ld-stat .num {
+    font-size: 1.45rem; font-weight: 800; color: var(--rwaise-strong);
+  }
+  .ld-stat .lbl {
+    color: var(--rwaise-muted); font-size: 0.78rem;
+    text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px;
+  }
+  .ld-meta dt {
+    color: var(--rwaise-muted); font-size: 0.78rem;
+    text-transform: uppercase; letter-spacing: 0.06em; margin-top: 14px;
+  }
+  .ld-meta dd { margin: 4px 0 0; color: var(--rwaise-strong); }
+  .ld-flag {
+    display: inline-block; margin: 4px 4px 0 0;
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 0.74rem; font-weight: 600;
+  }
+  .ld-flag.on  { color: #62ffd2; background: rgba(0,229,184,0.12);
+                  border: 1px solid rgba(0,229,184,0.26); }
+  .ld-flag.off { color: #aebbe0; background: rgba(255,255,255,0.05);
+                  border: 1px solid rgba(255,255,255,0.10); }
+  code.tx {
+    font-family: ui-monospace, monospace; font-size: 0.78rem;
+    word-break: break-all;
+    background: rgba(0,0,0,0.30); padding: 4px 8px; border-radius: 6px;
+    color: #c8d3ee;
+  }
+</style>
+{% endblock %}
+
+{% block rwaise_content %}
+{% set md = (issuance.metadata_json if issuance else {}) or {} %}
+{% set spv = md.get("spv", {}) %}
+<div class="rwaise-page-header">
+  <h1>{% if issuance %}{{ md.get("symbol", "—") }}{% else %}Listing detail{% endif %}</h1>
+  <span class="pill">#{{ listing_id }}</span>
+</div>
+
+{% if not issuance %}
+  <div class="rwaise-card">
+    <p style="color: var(--rwaise-muted);">
+      Listing #{{ listing_id }} not found. It may have been closed or never finalized.
+    </p>
+    <a class="rwaise-btn" href="{{ url_for('rwaise.marketplace_index') }}">&larr; Back to marketplace</a>
+  </div>
+{% else %}
+  <p style="color: var(--rwaise-muted); margin-bottom: 24px;">
+    {{ md.get("name", "") }} &middot;
+    <strong style="color: var(--rwaise-strong);">{{ md.get("asset_class", "—")|replace("_", " ") }}</strong>
+  </p>
+
+  <div class="ld-stat-row">
+    <div class="ld-stat">
+      <div class="num">${{ "{:,.0f}".format(md.get("valuation_usd") or 0) }}</div>
+      <div class="lbl">Total valuation</div>
+    </div>
+    <div class="ld-stat">
+      <div class="num">{{ md.get("target_apy_bps") or 0 }} bps</div>
+      <div class="lbl">Target APY</div>
+    </div>
+    <div class="ld-stat">
+      <div class="num">{{ issuance.asset_scale }}</div>
+      <div class="lbl">Asset scale</div>
+    </div>
+    <div class="ld-stat">
+      <div class="num">{{ issuance.transfer_fee or 0 }} bps</div>
+      <div class="lbl">Transfer fee</div>
+    </div>
+  </div>
+
+  <div class="ld-grid">
+    <div class="rwaise-card">
+      <h3 style="margin-top:0;">Metadata</h3>
+      <dl class="ld-meta">
+        <dt>SPV</dt>
+        <dd>{{ spv.get("name", "—") }} &middot; {{ spv.get("jurisdiction", "—") }}</dd>
+        <dt>Issuer account</dt>
+        <dd><code class="tx">{{ issuance.issuer_account or "—" }}</code></dd>
+        {% if issuance.submitted_tx_hash %}
+        <dt>Submission tx hash</dt>
+        <dd><code class="tx">{{ issuance.submitted_tx_hash }}</code></dd>
+        {% endif %}
+        {% if issuance.issuance_id %}
+        <dt>MPT issuance ID</dt>
+        <dd><code class="tx">{{ issuance.issuance_id }}</code></dd>
+        {% endif %}
+        <dt>Description</dt>
+        <dd>{{ md.get("description", "—") }}</dd>
+        <dt>Quote currency</dt>
+        <dd>{{ md.get("quote_currency", "USD") }}</dd>
+      </dl>
+    </div>
+
+    <div class="rwaise-card">
+      <h3 style="margin-top:0;">Token capabilities</h3>
+      <span class="ld-flag {% if issuance.can_lock %}on{% else %}off{% endif %}">can_lock</span>
+      <span class="ld-flag {% if issuance.require_auth %}on{% else %}off{% endif %}">require_auth</span>
+      <span class="ld-flag {% if issuance.can_escrow %}on{% else %}off{% endif %}">can_escrow</span>
+      <span class="ld-flag {% if issuance.can_trade %}on{% else %}off{% endif %}">can_trade</span>
+      <span class="ld-flag {% if issuance.can_transfer %}on{% else %}off{% endif %}">can_transfer</span>
+      <span class="ld-flag {% if issuance.can_clawback %}on{% else %}off{% endif %}">can_clawback</span>
+
+      <h3 style="margin-top:18px;">Status</h3>
+      <p style="color: var(--rwaise-strong);">
+        {{ issuance.status.value if issuance.status else "—" }}
+      </p>
+
+      <a class="rwaise-btn" href="{{ url_for('rwaise.issuance_detail', issuance_id=issuance.id) }}">
+        Open issuance detail &rarr;
+      </a>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}

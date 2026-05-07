@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1100" font-family="-apple-system,BlinkMacSystemFont,sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a1f"/>
+      <stop offset="100%" stop-color="#1a0d2e"/>
+    </linearGradient>
+    <linearGradient id="brand" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00e5b8"/>
+      <stop offset="60%" stop-color="#7c5cff"/>
+      <stop offset="100%" stop-color="#e5318a"/>
+    </linearGradient>
+    <marker id="aA" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L0,12 L12,6 z" fill="#62ffd2"/></marker>
+    <marker id="aP" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L0,12 L12,6 z" fill="#b896ff"/></marker>
+    <marker id="aPk" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L0,12 L12,6 z" fill="#ff7eb6"/></marker>
+    <marker id="aG" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L0,12 L12,6 z" fill="#ffd066"/></marker>
+  </defs>
+
+  <rect width="1600" height="1100" fill="url(#bg)"/>
+
+  <text x="800" y="52" text-anchor="middle" font-size="32" font-weight="800" fill="url(#brand)" letter-spacing="-1">x402 Sequence · Settled on the XRP Ledger</text>
+  <text x="800" y="80" text-anchor="middle" font-size="14" fill="#aebbe0">402 Payment Required → XRPL Payment → Retry with X-Payment proof → 200 OK</text>
+  <rect x="600" y="92" width="400" height="2" fill="url(#brand)" rx="1"/>
+
+  <!-- Lifelines -->
+  <g>
+    <text x="200" y="140" text-anchor="middle" font-size="12" font-weight="700" fill="#7c5cff" letter-spacing="2">RWAiSE AGENT</text>
+    <line x1="200" y1="150" x2="200" y2="980" stroke="rgba(124,92,255,0.32)" stroke-width="2" stroke-dasharray="4,4"/>
+
+    <text x="600" y="140" text-anchor="middle" font-size="12" font-weight="700" fill="#62ffd2" letter-spacing="2">WalletUserPayer</text>
+    <line x1="600" y1="150" x2="600" y2="980" stroke="rgba(0,229,184,0.32)" stroke-width="2" stroke-dasharray="4,4"/>
+
+    <text x="1000" y="140" text-anchor="middle" font-size="12" font-weight="700" fill="#ff7eb6" letter-spacing="2">x402 FACILITATOR</text>
+    <line x1="1000" y1="150" x2="1000" y2="980" stroke="rgba(229,49,138,0.32)" stroke-width="2" stroke-dasharray="4,4"/>
+
+    <text x="1400" y="140" text-anchor="middle" font-size="12" font-weight="700" fill="#ffd066" letter-spacing="2">XRP LEDGER</text>
+    <line x1="1400" y1="150" x2="1400" y2="980" stroke="rgba(255,208,102,0.32)" stroke-width="2" stroke-dasharray="4,4"/>
+  </g>
+
+  <!-- Step 1 · GET -->
+  <g>
+    <path d="M200,190 L1000,190" stroke="#ff7eb6" stroke-width="2.5" marker-end="url(#aPk)"/>
+    <text x="600" y="180" text-anchor="middle" font-size="13" font-weight="700" fill="#ff7eb6">[1] GET /api/v1/coindesk-proxy/premium/signals/XRP</text>
+    <text x="600" y="206" text-anchor="middle" font-size="11" fill="#aebbe0">Accept: application/json · no payment proof yet</text>
+  </g>
+
+  <!-- Step 2 · 402 -->
+  <g>
+    <path d="M1000,260 L200,260" stroke="#ffd066" stroke-width="2.5" marker-end="url(#aG)"/>
+    <text x="600" y="250" text-anchor="middle" font-size="13" font-weight="700" fill="#ffd066">[2] 402 Payment Required</text>
+    <rect x="280" y="270" width="640" height="80" rx="10" fill="rgba(255,208,102,0.08)" stroke="rgba(255,208,102,0.32)"/>
+    <text x="296" y="292" font-size="11" font-family="JetBrains Mono, ui-monospace, monospace" fill="#aebbe0">{ "payment_requirements": {</text>
+    <text x="296" y="308" font-size="11" font-family="JetBrains Mono, ui-monospace, monospace" fill="#aebbe0">    "destination": "rPlatformXxx...",</text>
+    <text x="296" y="324" font-size="11" font-family="JetBrains Mono, ui-monospace, monospace" fill="#aebbe0">    "amount": "50000",  "currency": "XRP",</text>
+    <text x="296" y="340" font-size="11" font-family="JetBrains Mono, ui-monospace, monospace" fill="#aebbe0">    "nonce": "a3f7b2c8d9e4..." } }</text>
+  </g>
+
+  <!-- Step 3 · agent calls payer -->
+  <g>
+    <path d="M200,400 L600,400" stroke="#62ffd2" stroke-width="2.5" marker-end="url(#aA)"/>
+    <text x="400" y="390" text-anchor="middle" font-size="13" font-weight="700" fill="#62ffd2">[3] payer.pay(destination, amount, nonce)</text>
+    <text x="400" y="416" text-anchor="middle" font-size="11" fill="#aebbe0">cap.reserve(0.025) · checks per-call + per-session</text>
+  </g>
+
+  <!-- Step 4 · payer signs and submits -->
+  <g>
+    <path d="M600,470 L1400,470" stroke="#ffd066" stroke-width="2.5" marker-end="url(#aG)"/>
+    <text x="1000" y="460" text-anchor="middle" font-size="13" font-weight="700" fill="#ffd066">[4] autofill_and_sign(Payment) · submit_and_wait()</text>
+    <rect x="700" y="480" width="600" height="80" rx="10" fill="rgba(255,208,102,0.08)" stroke="rgba(255,208,102,0.32)"/>
+    <text x="716" y="502" font-size="11" font-family="JetBrains Mono, ui-monospace, monospace" fill="#aebbe0">Payment {</text>
+    <text x="716" y="518" font-size="11" font-family="JetBrains Mono, ui-monospace, monospace" fill="#aebbe0">  account: r{user_wallet}, destination: rPlatformXxx...,</text>
+    <text x="716" y="534" font-size="11" font-family="JetBrains Mono, ui-monospace, monospace" fill="#aebbe0">  amount: 50000 drops (= $0.025),</text>
+    <text x="716" y="550" font-size="11" font-family="JetBrains Mono, ui-monospace, monospace" fill="#aebbe0">  memo: hex("x402:coindesk:a3f7b2c8d9e4..."),  fee: 10 }</text>
+  </g>
+
+  <!-- Step 5 · ledger validates -->
+  <g>
+    <path d="M1400,610 L600,610" stroke="#ffd066" stroke-width="2.5" marker-end="url(#aG)"/>
+    <text x="1000" y="600" text-anchor="middle" font-size="13" font-weight="700" fill="#ffd066">[5] tx_hash + validated_ledger_index</text>
+    <text x="1000" y="626" text-anchor="middle" font-size="11" fill="#aebbe0">~3-5 s consensus · "8B14F2C9E3A7..."</text>
+  </g>
+
+  <!-- Step 6 · payer returns hash -->
+  <g>
+    <path d="M600,680 L200,680" stroke="#62ffd2" stroke-width="2.5" marker-end="url(#aA)"/>
+    <text x="400" y="670" text-anchor="middle" font-size="13" font-weight="700" fill="#62ffd2">[6] return tx_hash</text>
+    <text x="400" y="696" text-anchor="middle" font-size="11" fill="#aebbe0">cost reserved → spent · audit row written</text>
+  </g>
+
+  <!-- Step 7 · agent retries -->
+  <g>
+    <path d="M200,750 L1000,750" stroke="#62ffd2" stroke-width="2.5" marker-end="url(#aA)"/>
+    <text x="600" y="740" text-anchor="middle" font-size="13" font-weight="700" fill="#62ffd2">[7] GET /api/v1/coindesk-proxy/premium/signals/XRP (retry)</text>
+    <rect x="280" y="760" width="640" height="50" rx="10" fill="rgba(0,229,184,0.06)" stroke="rgba(0,229,184,0.32)"/>
+    <text x="296" y="782" font-size="11" font-family="JetBrains Mono, ui-monospace, monospace" fill="#aebbe0">X-Payment: base64({ "tx_hash": "8B14F2C9E3A7...",</text>
+    <text x="296" y="800" font-size="11" font-family="JetBrains Mono, ui-monospace, monospace" fill="#aebbe0">              "nonce": "a3f7b2c8d9e4...", "destination": ... })</text>
+  </g>
+
+  <!-- Step 8 · facilitator verifies and returns -->
+  <g>
+    <path d="M1000,860 L200,860" stroke="#b896ff" stroke-width="2.5" marker-end="url(#aP)"/>
+    <text x="600" y="850" text-anchor="middle" font-size="13" font-weight="700" fill="#b896ff">[8] 200 OK · returns the signal</text>
+    <rect x="280" y="870" width="640" height="60" rx="10" fill="rgba(124,92,255,0.06)" stroke="rgba(124,92,255,0.32)"/>
+    <text x="296" y="892" font-size="11" font-family="JetBrains Mono, ui-monospace, monospace" fill="#aebbe0">{ "direction": "buy", "confidence": 0.78,</text>
+    <text x="296" y="908" font-size="11" font-family="JetBrains Mono, ui-monospace, monospace" fill="#aebbe0">  "rationale": "Stablecoin growth on the XRPL is up 32% MoM..." }</text>
+    <text x="296" y="924" font-size="10" fill="#62ffd2">+ audit row written by facilitator with on-ledger tx hash</text>
+  </g>
+
+  <!-- Footer -->
+  <g transform="translate(60,990)">
+    <rect width="1480" height="60" rx="10" fill="rgba(15,16,48,0.55)" stroke="rgba(124,92,255,0.20)"/>
+    <text x="20" y="22" font-size="11" font-weight="700" fill="#7c5cff" letter-spacing="2">WHY THIS MATTERS</text>
+    <text x="20" y="42" font-size="11" fill="#aebbe0">x402 turns ANY HTTP API into a pay-per-call endpoint with no signup, no API keys, no rate-limit dashboards.</text>
+    <text x="20" y="56" font-size="11" fill="#aebbe0">RWAiSE settles in XRP drops — sub-second, $0.000001/tx — making AI agents economically viable for fine-grained data access.</text>
+  </g>
+
+  <text x="40" y="1080" font-size="11" fill="#7d89aa">github.com/baali-who/rwaise · MIT · iter-21</text>
+  <text x="1560" y="1080" text-anchor="end" font-size="11" fill="#7d89aa">RWAiSE · x402 Sequence · 2026</text>
+</svg>

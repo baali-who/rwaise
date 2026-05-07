@@ -1,0 +1,491 @@
+{% extends "rwaise/_base.html" %}
+{% block title %}RWAiSE — Hackathon Demo Walkthrough{% endblock %}
+
+{% block head %}
+{{ super() }}
+<style>
+  /* ── Walkthrough-only styles ──────────────────────────────────── */
+  .demo-hero {
+    position: relative;
+    margin: 8px 0 28px;
+    padding: 48px 44px;
+    border-radius: 24px;
+    background:
+      radial-gradient(700px circle at 10% 0%, rgba(124,92,255,0.22), transparent 50%),
+      radial-gradient(800px circle at 100% 100%, rgba(0,229,184,0.16), transparent 60%),
+      rgba(15,16,48,0.55);
+    border: 1px solid rgba(124,92,255,0.32);
+    overflow: hidden;
+  }
+  .demo-hero h1 {
+    font-size: clamp(1.9rem, 3.6vw, 2.8rem);
+    margin: 12px 0 10px; line-height: 1.12; letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #00e5b8 0%, #7c5cff 60%, #e5318a 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+    font-weight: 800;
+  }
+  .demo-hero p {
+    color: var(--rwaise-strong);
+    max-width: 720px; line-height: 1.55; font-size: 1.05rem;
+  }
+  .demo-hero .demo-meta {
+    display: flex; gap: 14px; flex-wrap: wrap;
+    margin-top: 18px; color: var(--rwaise-muted);
+    font-size: 0.86rem;
+  }
+  .demo-hero .demo-meta span {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 5px 12px; border-radius: 999px;
+  }
+
+  /* ── TOC chips ─────────────────────────────────────────────────── */
+  .demo-toc {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin: 0 0 32px; padding: 14px 18px;
+    background: rgba(15,16,48,0.42);
+    border: 1px solid rgba(124,92,255,0.18);
+    border-radius: 14px;
+  }
+  .demo-toc a {
+    padding: 6px 12px; border-radius: 999px;
+    background: rgba(124,92,255,0.16);
+    color: #d4cdff; text-decoration: none; font-size: 0.84rem;
+    border: 1px solid rgba(124,92,255,0.24);
+    transition: background .12s ease, border-color .12s ease;
+  }
+  .demo-toc a:hover {
+    background: rgba(124,92,255,0.32);
+    border-color: rgba(124,92,255,0.56);
+  }
+
+  /* ── Step cards ────────────────────────────────────────────────── */
+  .demo-step {
+    margin: 0 0 22px;
+    background: rgba(15,16,48,0.55);
+    border: 1px solid rgba(124,92,255,0.20);
+    border-radius: 18px;
+    overflow: hidden;
+    scroll-margin-top: 90px;
+  }
+  .demo-step-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 18px 24px;
+    border-bottom: 1px solid rgba(124,92,255,0.16);
+    background: linear-gradient(180deg, rgba(124,92,255,0.06), transparent);
+  }
+  .demo-step-num {
+    width: 36px; height: 36px; flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 10px; font-weight: 800; color: #06060f;
+    background: linear-gradient(135deg, #00e5b8, #7c5cff);
+    font-size: 0.95rem;
+  }
+  .demo-step-header h2 {
+    margin: 0; font-size: 1.18rem; color: var(--rwaise-strong);
+  }
+  .demo-step-header .demo-step-tag {
+    margin-left: auto;
+    padding: 4px 12px; border-radius: 999px;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .demo-tag-on  { color: #62ffd2; background: rgba(0,229,184,0.14);
+                  border: 1px solid rgba(0,229,184,0.32); }
+  .demo-tag-off { color: #ff8aa3; background: rgba(255,107,139,0.10);
+                  border: 1px solid rgba(255,107,139,0.26); }
+
+  .demo-step-body {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+    padding: 22px 24px 24px;
+  }
+  @media (max-width: 820px) {
+    .demo-step-body { grid-template-columns: 1fr; }
+  }
+  .demo-step-body p {
+    color: var(--rwaise-strong); line-height: 1.55; margin: 0 0 10px;
+  }
+  .demo-step-body ul {
+    margin: 4px 0 0 0; padding-left: 18px;
+    color: var(--rwaise-muted); line-height: 1.55;
+  }
+  .demo-step-body code {
+    background: rgba(255,255,255,0.06);
+    padding: 2px 6px; border-radius: 5px;
+    color: #e0d8ff; font-size: 0.86em;
+  }
+  .demo-step-actions {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    margin-top: 14px;
+  }
+
+  /* ── Mockup panels (right column) ──────────────────────────────── */
+  .demo-mock {
+    background: rgba(0,0,0,0.40);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px; padding: 16px;
+    font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+    font-size: 0.78rem; line-height: 1.55; color: #c8d3ee;
+    overflow-x: auto;
+  }
+  .demo-mock .k { color: #7c5cff; }
+  .demo-mock .v { color: #62ffd2; }
+  .demo-mock .c { color: #6a7a99; font-style: italic; }
+  .demo-mock .h { color: #e5318a; font-weight: 700; }
+
+  /* ── Closing CTA ───────────────────────────────────────────────── */
+  .demo-cta {
+    margin-top: 32px; padding: 32px 32px;
+    border-radius: 18px;
+    background:
+      radial-gradient(500px circle at 100% 0%, rgba(229,49,138,0.15), transparent 60%),
+      radial-gradient(500px circle at 0% 100%, rgba(0,229,184,0.16), transparent 60%),
+      rgba(15,16,48,0.65);
+    border: 1px solid rgba(229,49,138,0.32);
+    text-align: center;
+  }
+  .demo-cta h2 {
+    margin: 0 0 10px; font-size: 1.5rem; color: var(--rwaise-strong);
+  }
+  .demo-cta p {
+    color: var(--rwaise-muted); margin: 0 0 18px;
+  }
+  .demo-cta .cta-row {
+    display: inline-flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+  }
+
+  /* ── Disabled-feature card ─────────────────────────────────────── */
+  .demo-step.disabled .demo-step-body { opacity: 0.55; }
+</style>
+{% endblock %}
+
+{% block rwaise_content %}
+{# ── Hero ────────────────────────────────────────────────────── #}
+<div class="demo-hero">
+  <span class="rwaise-hero-tag" style="display:inline-block;padding:6px 14px;border-radius:999px;
+        background:rgba(0,229,184,0.14);color:#62ffd2;font-size:0.78rem;font-weight:600;
+        letter-spacing:0.18em;text-transform:uppercase;border:1px solid rgba(0,229,184,0.28);">
+    Hackathon walkthrough · 90&nbsp;seconds
+  </span>
+  <h1>The full RWAiSE story,<br>in one page.</h1>
+  <p>
+    Eight steps, one scroll. Each step explains what the capability does, why it matters on the
+    XRP Ledger, and gives you a one-click link to try it live inside this same Gopnik wallet.
+    Built for hackathon judges; equally useful as a sales demo.
+  </p>
+  <div class="demo-meta">
+    <span>⏱ ~90 sec read</span>
+    <span>🔗 8 live surfaces</span>
+    <span>🧠 AWS Bedrock Claude</span>
+    <span>⚡ XLS-33 · XLS-65 · x402</span>
+  </div>
+</div>
+
+{# ── Table of contents ──────────────────────────────────────── #}
+<div class="demo-toc">
+  <a href="#step-1">1 · Wizard</a>
+  <a href="#step-2">2 · AI co-pilot</a>
+  <a href="#step-3">3 · Credentials</a>
+  <a href="#step-4">4 · Marketplace</a>
+  <a href="#step-5">5 · Holdings</a>
+  <a href="#step-6">6 · Redemption</a>
+  <a href="#step-7">7 · Audit trail</a>
+  <a href="#step-8">8 · Admin flags</a>
+</div>
+
+{# ── Step 1 · Wizard ────────────────────────────────────────── #}
+<section class="demo-step{% if not flag_state.WIZARD %} disabled{% endif %}" id="step-1">
+  <div class="demo-step-header">
+    <div class="demo-step-num">1</div>
+    <h2>Tokenize an asset in 9 guided steps</h2>
+    <span class="demo-step-tag {% if flag_state.WIZARD %}demo-tag-on{% else %}demo-tag-off{% endif %}">
+      {% if flag_state.WIZARD %}Live{% else %}Disabled{% endif %}
+    </span>
+  </div>
+  <div class="demo-step-body">
+    <div>
+      <p>The wizard takes an issuer from <strong>asset class</strong> to a signed
+      <code>MPTokenIssuanceCreate</code> transaction in under 20 minutes — without writing a
+      single line of XRPL code.</p>
+      <ul>
+        <li>9 progressive steps with full validation</li>
+        <li>Cap-table CSV upload with auto-validation</li>
+        <li>Document review (term sheet, prospectus)</li>
+        <li>Final HSM-signed broadcast to the ledger</li>
+      </ul>
+      <div class="demo-step-actions">
+        <a class="rwaise-btn" href="{{ url_for('rwaise.wizard') }}">Open the wizard &rarr;</a>
+      </div>
+    </div>
+    <div class="demo-mock">
+<span class="c">// 9-step wizard state</span>
+{
+  <span class="k">"step"</span>: <span class="v">3</span>,
+  <span class="k">"asset_class"</span>: <span class="v">"private_credit"</span>,
+  <span class="k">"jurisdiction"</span>: <span class="v">"US-DE"</span>,
+  <span class="k">"cap_table_rows"</span>: <span class="v">42</span>,
+  <span class="k">"cap_table_clean"</span>: <span class="v">true</span>,
+  <span class="k">"copilot_score"</span>: <span class="v">0.94</span>
+}
+    </div>
+  </div>
+</section>
+
+{# ── Step 2 · AI co-pilot ───────────────────────────────────── #}
+<section class="demo-step{% if not flag_state.AI_COPILOT %} disabled{% endif %}" id="step-2">
+  <div class="demo-step-header">
+    <div class="demo-step-num">2</div>
+    <h2>AI co-pilot powered by AWS Bedrock Claude</h2>
+    <span class="demo-step-tag {% if flag_state.AI_COPILOT %}demo-tag-on{% else %}demo-tag-off{% endif %}">
+      {% if flag_state.AI_COPILOT %}Live{% else %}Disabled{% endif %}
+    </span>
+  </div>
+  <div class="demo-step-body">
+    <div>
+      <p>Inside every wizard step, an embedded Claude Sonnet 4.6 co-pilot drafts prospectus
+      summaries, suggests <strong>MPT issuance parameters</strong>, reviews uploaded
+      documents for red flags, and answers free-form questions.</p>
+      <ul>
+        <li>4 intents: <code>draft_prospectus</code>, <code>suggest_mpt</code>,
+            <code>review_docs</code>, <code>answer</code></li>
+        <li>Per-tenant spending caps (configurable, audit-trailed)</li>
+        <li>Mock fallback when Bedrock is unreachable — demo never breaks</li>
+      </ul>
+    </div>
+    <div class="demo-mock">
+<span class="c">// POST /rwaise/wizard/copilot</span>
+{
+  <span class="k">"intent"</span>: <span class="v">"suggest_mpt"</span>
+}
+
+<span class="c">// → response</span>
+{
+  <span class="k">"asset_scale"</span>: <span class="v">2</span>,
+  <span class="k">"transfer_fee_bps"</span>: <span class="v">25</span>,
+  <span class="k">"flags"</span>: [<span class="v">"tfMPTRequireAuth"</span>],
+  <span class="k">"rationale"</span>: <span class="v">"Reg D 506(c)..."</span>
+}
+    </div>
+  </div>
+</section>
+
+{# ── Step 3 · Credentials ───────────────────────────────────── #}
+<section class="demo-step{% if not flag_state.CREDENTIALS %} disabled{% endif %}" id="step-3">
+  <div class="demo-step-header">
+    <div class="demo-step-num">3</div>
+    <h2>XLS-65 layered credentials gate every action</h2>
+    <span class="demo-step-tag {% if flag_state.CREDENTIALS %}demo-tag-on{% else %}demo-tag-off{% endif %}">
+      {% if flag_state.CREDENTIALS %}Live{% else %}Disabled{% endif %}
+    </span>
+  </div>
+  <div class="demo-step-body">
+    <div>
+      <p>Every marketplace listing, escrow, and redemption is filtered against the visiting
+      wallet's <strong>credential set</strong> on the ledger. Accredited-investor checks,
+      jurisdiction gates, KYC tier — all enforced at issuance time and re-verified on every
+      transfer.</p>
+      <ul>
+        <li>Credentials issued by trusted parties (KYC providers, regulators)</li>
+        <li>Cap-table entries pre-bind to credential subjects</li>
+        <li>Transfers rejected on-ledger if credential expired or revoked</li>
+      </ul>
+    </div>
+    <div class="demo-mock">
+<span class="c">// XRPL credential check</span>
+<span class="h">CREDENTIAL_TYPE</span>:    accredited_investor_us
+<span class="h">ISSUER</span>:             rN7n7otQDd6FczFgLdSqtcsAUxDkw6fzRH
+<span class="h">SUBJECT</span>:            r{wallet}
+<span class="h">EXPIRATION</span>:         2026-12-31
+<span class="h">STATUS</span>:             ✓ valid
+<span class="c">// → marketplace listing visible</span>
+    </div>
+  </div>
+</section>
+
+{# ── Step 4 · Marketplace ───────────────────────────────────── #}
+<section class="demo-step{% if not flag_state.ORDERBOOK %} disabled{% endif %}" id="step-4">
+  <div class="demo-step-header">
+    <div class="demo-step-num">4</div>
+    <h2>Cap-table-aware marketplace</h2>
+    <span class="demo-step-tag {% if flag_state.ORDERBOOK %}demo-tag-on{% else %}demo-tag-off{% endif %}">
+      {% if flag_state.ORDERBOOK %}Live{% else %}Disabled{% endif %}
+    </span>
+  </div>
+  <div class="demo-step-body">
+    <div>
+      <p>The marketplace hides listings the visiting wallet isn't credentialed for. Orders are
+      <strong>XLS-66 ready</strong> (permissioned DEX) — only credentialed counter-parties can
+      cross.</p>
+      <ul>
+        <li>Anonymous browsing of public catalogue metadata</li>
+        <li>Per-listing credential requirements rendered inline</li>
+        <li>Order book wired to XRPL native offer crossing</li>
+      </ul>
+      <div class="demo-step-actions">
+        <a class="rwaise-btn rwaise-btn-secondary"
+           href="{{ url_for('rwaise.marketplace_index') }}">Browse listings &rarr;</a>
+      </div>
+    </div>
+    <div class="demo-mock">
+<span class="c">// Marketplace filter pipeline</span>
+listings
+  .filter(<span class="k">l</span> -&gt; visitor.holdsAll(l.required_credentials))
+  .filter(<span class="k">l</span> -&gt; l.jurisdiction.matches(visitor))
+  .sort(<span class="k">by</span>: <span class="v">"yield_apy desc"</span>)
+  .paginate(<span class="v">25</span>)
+    </div>
+  </div>
+</section>
+
+{# ── Step 5 · Holdings ──────────────────────────────────────── #}
+<section class="demo-step" id="step-5">
+  <div class="demo-step-header">
+    <div class="demo-step-num">5</div>
+    <h2>My holdings · live across every wallet</h2>
+    <span class="demo-step-tag demo-tag-on">Live</span>
+  </div>
+  <div class="demo-step-body">
+    <div>
+      <p>Every MPT balance the user owns, across <strong>every Gopnik wallet on their account</strong>,
+      auto-aggregated. Distribution events, lock state, redemption queue position visible at a glance.</p>
+      <ul>
+        <li>Balances streamed from the ledger every 30s</li>
+        <li>Click-through to issuance detail + audit trail</li>
+        <li>One-click redemption request (subject to flag + 4-eyes)</li>
+      </ul>
+      <div class="demo-step-actions">
+        <a class="rwaise-btn rwaise-btn-secondary"
+           href="{{ url_for('rwaise.my_holdings') }}">View my holdings &rarr;</a>
+      </div>
+    </div>
+    <div class="demo-mock">
+<span class="h">ASSET</span>            <span class="h">UNITS</span>     <span class="h">STATUS</span>
+ACME-PC-2025      125       authorised
+RIYADH-RE-A       40        locked&nbsp;(escrow)
+GLN-CARBON-9      1,000     redeem&nbsp;in&nbsp;queue
+NYC-HFT-LP        12.5      authorised
+    </div>
+  </div>
+</section>
+
+{# ── Step 6 · Redemption ────────────────────────────────────── #}
+<section class="demo-step{% if not flag_state.REDEMPTION %} disabled{% endif %}" id="step-6">
+  <div class="demo-step-header">
+    <div class="demo-step-num">6</div>
+    <h2>4-eyes redemption with on-chain proof</h2>
+    <span class="demo-step-tag {% if flag_state.REDEMPTION %}demo-tag-on{% else %}demo-tag-off{% endif %}">
+      {% if flag_state.REDEMPTION %}Live{% else %}Disabled{% endif %}
+    </span>
+  </div>
+  <div class="demo-step-body">
+    <div>
+      <p>Investor files a redemption ticket. Two distinct admins must approve before the
+      <strong>MPTokenIssuanceDestroy</strong> + fiat off-ramp fires. Every step audit-trailed
+      and signed by the HSM.</p>
+      <ul>
+        <li>Status machine: <code>requested → awaiting_4eyes → approved → settled</code></li>
+        <li>Holds the underlying MPT in escrow during review</li>
+        <li>Settles via XLS-71 ODL routing (fiat rails) when configured</li>
+      </ul>
+    </div>
+    <div class="demo-mock">
+<span class="c">// Redemption ticket</span>
+{
+  <span class="k">"id"</span>:        <span class="v">"rdm_8f2a..."</span>,
+  <span class="k">"status"</span>:    <span class="v">"awaiting_4eyes"</span>,
+  <span class="k">"approvers"</span>: [<span class="v">"alice@…"</span>],
+  <span class="k">"needed"</span>:    <span class="v">2</span>,
+  <span class="k">"amount"</span>:    <span class="v">125</span>,
+  <span class="k">"asset"</span>:     <span class="v">"ACME-PC-2025"</span>
+}
+    </div>
+  </div>
+</section>
+
+{# ── Step 7 · Audit trail ───────────────────────────────────── #}
+<section class="demo-step" id="step-7">
+  <div class="demo-step-header">
+    <div class="demo-step-num">7</div>
+    <h2>Tamper-evident audit trail</h2>
+    <span class="demo-step-tag demo-tag-on">Live</span>
+  </div>
+  <div class="demo-step-body">
+    <div>
+      <p>Every state-changing event for every issuance — create, authorise, distribute,
+      transfer, lock, clawback, redeem — is logged with the on-ledger transaction hash and the
+      acting principal.</p>
+      <ul>
+        <li>500-event live tail by default; full export available</li>
+        <li>Each row links to the XRPL explorer txn page</li>
+        <li>Append-only schema; no UPDATE / DELETE</li>
+      </ul>
+      <div class="demo-step-actions">
+        <a class="rwaise-btn rwaise-btn-secondary"
+           href="{{ url_for('rwaise.audit_trail') }}">Open audit trail &rarr;</a>
+      </div>
+    </div>
+    <div class="demo-mock">
+<span class="h">2026-05-06T10:14Z</span>  authorise   r4Ej…  tx 6F2…
+<span class="h">2026-05-06T10:09Z</span>  distribute  r9LP…  tx 8B1…
+<span class="h">2026-05-06T09:55Z</span>  create      rN7n…  tx 4D9…
+<span class="h">2026-05-06T09:55Z</span>  metadata    rN7n…  ipfs Qm3…
+    </div>
+  </div>
+</section>
+
+{# ── Step 8 · Admin feature flags ───────────────────────────── #}
+<section class="demo-step" id="step-8">
+  <div class="demo-step-header">
+    <div class="demo-step-num">8</div>
+    <h2>Cluster-wide kill switch &amp; sub-flags</h2>
+    <span class="demo-step-tag demo-tag-on">Admin</span>
+  </div>
+  <div class="demo-step-body">
+    <div>
+      <p>One master switch turns the entire RWAiSE plugin on or off cluster-wide. Eleven
+      sub-flags let admins disable individual capabilities (AI co-pilot, redemption, x402, ODL
+      routing, HSM signer) without redeploying. Propagation in &lt; 5 seconds via Redis.</p>
+      <ul>
+        <li>Three-layer cascade: env-var floor → DB → Redis cache</li>
+        <li>Every toggle audit-trailed with actor &amp; reason</li>
+        <li>Zero-downtime rollback: disable, fix, re-enable</li>
+      </ul>
+      <div class="demo-step-actions">
+        <a class="rwaise-btn"
+           href="{{ url_for('rwaise_admin_flags.index') }}">Open admin panel &rarr;</a>
+      </div>
+    </div>
+    <div class="demo-mock">
+<span class="h">MASTER</span>           ✓ on
+<span class="h">WIZARD</span>           ✓ on
+<span class="h">AI_COPILOT</span>       ✓ on
+<span class="h">CREDENTIALS</span>      ✓ on
+<span class="h">ORDERBOOK</span>        ✓ on
+<span class="h">ESCROW</span>           ✓ on
+<span class="h">REDEMPTION</span>       ✓ on
+<span class="h">X402</span>             ✓ on
+<span class="h">BEDROCK_AGENT</span>    ✓ on
+<span class="h">DEVELOPER_API</span>    ✓ on
+<span class="h">ODL</span>              ✓ on
+<span class="h">HSM_SIGNER</span>       ✓ on
+    </div>
+  </div>
+</section>
+
+{# ── Closing CTA ────────────────────────────────────────────── #}
+<div class="demo-cta">
+  <h2>You've seen the whole plugin. Pick a starting point.</h2>
+  <p>Each surface is one click away. The wizard is the most photogenic; the admin panel is the
+     most operationally interesting.</p>
+  <div class="cta-row">
+    <a class="rwaise-btn" href="{{ url_for('rwaise.wizard') }}">Tokenize an asset</a>
+    <a class="rwaise-btn rwaise-btn-secondary"
+       href="{{ url_for('rwaise.marketplace_index') }}">Browse marketplace</a>
+    <a class="rwaise-btn rwaise-btn-secondary"
+       href="{{ url_for('rwaise.agent_chat') }}">Talk to RWAiSE Trader</a>
+    <a class="rwaise-btn rwaise-btn-secondary"
+       href="{{ url_for('rwaise_admin_flags.index') }}">Admin panel</a>
+  </div>
+</div>
+{% endblock %}

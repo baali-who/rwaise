@@ -1,0 +1,12 @@
+{% extends "rwaise/_base.html" %}
+{% block title %}Agent caps — Admin{% endblock %}
+{% block rwaise_content %}
+<div class="rwaise-page-header"><h1>Per-user agent caps</h1></div>
+<table class="rwaise-table">
+<thead><tr><th>User</th><th>Daily buy (USD)</th><th>Daily sell (USD)</th><th>Transfer cap</th><th>2FA above</th><th>Enabled</th></tr></thead>
+<tbody>
+{% for r in rows %}
+<tr><td>{{ r.user_id }}</td><td>${{ r.daily_buy_cap_usd }}</td><td>${{ r.daily_sell_cap_usd }}</td><td>{{ r.transfer_cap_drops }}</td><td>{{ r.require_2fa_above_drops }}</td><td>{% if r.enabled %}<span class="rwaise-tag-active">ON</span>{% else %}<span class="rwaise-tag-disabled">OFF</span>{% endif %}</td></tr>
+{% endfor %}
+</tbody></table>
+{% endblock %}

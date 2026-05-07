@@ -1,0 +1,131 @@
+{% extends "rwaise/_base.html" %}
+{% block title %}My RWA holdings — RWAiSE{% endblock %}
+
+{% block head %}
+{{ super() }}
+<style>
+  .hold-table-wrap {
+    background: rgba(15,16,48,0.50);
+    border: 1px solid rgba(124,92,255,0.18);
+    border-radius: 14px; overflow: hidden;
+  }
+  .hold-empty {
+    padding: 60px 24px; text-align: center; color: var(--rwaise-muted);
+  }
+  .hold-empty h3 { color: var(--rwaise-strong); margin-bottom: 8px; }
+  .hold-status {
+    display: inline-block;
+    padding: 3px 10px; border-radius: 999px;
+    font-size: 0.74rem; font-weight: 700; letter-spacing: 0.04em;
+  }
+  .hold-status.active   { color: #62ffd2; background: rgba(0,229,184,0.12); }
+  .hold-status.locked   { color: #ffd066; background: rgba(255,208,102,0.12); }
+  .hold-status.pending  { color: #aebbe0; background: rgba(255,255,255,0.05); }
+  .hold-status.revoked  { color: #ff8aa3; background: rgba(255,107,139,0.10); }
+
+  .hold-summary {
+    display: grid; gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    margin-bottom: 22px;
+  }
+  .hold-stat {
+    background: rgba(15,16,48,0.55);
+    border: 1px solid rgba(124,92,255,0.16);
+    border-radius: 12px; padding: 14px 16px;
+  }
+  .hold-stat .num {
+    font-size: 1.5rem; font-weight: 800; color: var(--rwaise-strong);
+  }
+  .hold-stat .lbl {
+    color: var(--rwaise-muted); font-size: 0.78rem;
+    text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px;
+  }
+</style>
+{% endblock %}
+
+{% block rwaise_content %}
+<div class="rwaise-page-header">
+  <h1>My RWA holdings</h1>
+  <span class="pill">{{ (holdings or [])|length }} position{{ "s" if ((holdings or [])|length) != 1 else "" }}</span>
+</div>
+
+{% if holdings %}
+{% set total_units = (holdings|sum(attribute='last_observed_balance', start=0)) %}
+<div class="hold-summary">
+  <div class="hold-stat">
+    <div class="num">{{ holdings|length }}</div>
+    <div class="lbl">Distinct positions</div>
+  </div>
+  <div class="hold-stat">
+    <div class="num">{{ "{:,}".format(total_units|int) }}</div>
+    <div class="lbl">Units across all assets</div>
+  </div>
+  <div class="hold-stat">
+    <div class="num">
+      {% set wallets = holdings|map(attribute='holder_account')|unique|list %}
+      {{ wallets|length }}
+    </div>
+    <div class="lbl">Wallets touched</div>
+  </div>
+</div>
+{% endif %}
+
+<div class="hold-table-wrap">
+  <table class="rwaise-table">
+    <thead>
+      <tr>
+        <th>Asset</th>
+        <th>Class</th>
+        <th>Wallet</th>
+        <th style="text-align: right;">Balance</th>
+        <th>Status</th>
+        <th>Last seen</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for h in holdings or [] %}
+        {% set md = (h.issuance.metadata_json if h.issuance else {}) or {} %}
+        {% set status = h.status.value if h.status else "—" %}
+        <tr>
+          <td>
+            <strong>{{ md.get("symbol", "—") }}</strong><br>
+            <span style="color: var(--rwaise-muted); font-size: 0.82rem;">{{ md.get("name", "") }}</span>
+          </td>
+          <td style="color: var(--rwaise-muted); font-size: 0.86rem;">
+            {{ md.get("asset_class", "—")|replace("_", " ") }}
+          </td>
+          <td>
+            <code style="font-size: 0.78rem;">{{ h.holder_account[:8] }}…{{ h.holder_account[-6:] }}</code>
+          </td>
+          <td style="text-align: right; font-variant-numeric: tabular-nums;">
+            <strong>{{ "{:,}".format(h.last_observed_balance|int) }}</strong>
+          </td>
+          <td>
+            <span class="hold-status {{ status if status in ['active','locked','revoked'] else 'pending' }}">
+              {{ status }}
+            </span>
+          </td>
+          <td style="color: var(--rwaise-muted); font-size: 0.86rem;">
+            {{ h.last_seen_at.strftime("%Y-%m-%d %H:%M") if h.last_seen_at else "—" }}
+          </td>
+          <td>
+            {% if h.issuance %}
+              <a href="{{ url_for('rwaise.issuance_detail', issuance_id=h.issuance.id) }}"
+                 style="color: #62ffd2; text-decoration: none; font-size: 0.86rem;">Detail →</a>
+            {% endif %}
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="7"><div class="hold-empty">
+          <h3>No holdings yet</h3>
+          <p>Browse the marketplace to find listings you&rsquo;re credentialed for, then subscribe.</p>
+          <a class="rwaise-btn" href="{{ url_for('rwaise.marketplace_index') }}" style="margin-top:14px;">
+            Open marketplace &rarr;
+          </a>
+        </div></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

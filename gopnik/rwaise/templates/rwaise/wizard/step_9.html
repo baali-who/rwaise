@@ -1,0 +1,10 @@
+{% extends "rwaise/wizard/shell.html" %}
+{% block wizard_step %}
+{% set step_meta = {
+  "title": "Step 9 · Review & finalize",
+  "lede": "Last check before we broadcast. Confirm legal review, the audit/valuation file, and that you understand the clawback semantics.",
+  "tip": "Finalize broadcasts a single <code>MPTokenIssuanceCreate</code> via your configured signer (HSM, KMS, or local seed). The transaction is irreversible — you can lock or clawback later, but you can&rsquo;t un-issue.",
+  "two_col": False,
+} %}
+{% include 'rwaise/wizard/_step_form.html' %}
+{% endblock %}

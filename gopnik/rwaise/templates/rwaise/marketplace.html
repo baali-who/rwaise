@@ -1,0 +1,160 @@
+{% extends "rwaise/_base.html" %}
+{% block title %}Marketplace — RWAiSE{% endblock %}
+
+{% block head %}
+{{ super() }}
+<style>
+  .mkt-toolbar {
+    display: flex; align-items: center; gap: 14px;
+    margin: 0 0 24px;
+    padding: 14px 18px;
+    background: rgba(15,16,48,0.50);
+    border: 1px solid rgba(124,92,255,0.18);
+    border-radius: 14px;
+  }
+  .mkt-toolbar input {
+    flex: 1;
+    padding: 10px 14px; border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(124,92,255,0.22);
+    color: var(--rwaise-strong);
+    font-size: 0.95rem;
+  }
+  .mkt-toolbar input:focus { outline: none; border-color: rgba(124,92,255,0.62); }
+
+  .mkt-grid {
+    display: grid; gap: 18px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+  .mkt-card {
+    background: rgba(15,16,48,0.55);
+    border: 1px solid rgba(124,92,255,0.20);
+    border-radius: 16px; padding: 22px 24px;
+    text-decoration: none;
+    transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .mkt-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(124,92,255,0.50);
+    box-shadow: 0 18px 36px -18px rgba(124,92,255,0.40);
+  }
+  .mkt-card .mkt-symbol {
+    font-size: 1.42rem; font-weight: 800;
+    background: linear-gradient(135deg, #00e5b8, #7c5cff);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+  }
+  .mkt-card .mkt-name { color: var(--rwaise-strong); font-size: 0.94rem; }
+  .mkt-card .mkt-row {
+    display: flex; justify-content: space-between;
+    color: var(--rwaise-muted); font-size: 0.84rem;
+  }
+  .mkt-card .mkt-row strong { color: var(--rwaise-strong); }
+  .mkt-card .mkt-class {
+    display: inline-block; align-self: flex-start;
+    margin-top: 4px;
+    padding: 3px 10px; border-radius: 999px;
+    background: rgba(124,92,255,0.16); color: #d4cdff;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: 1px solid rgba(124,92,255,0.28);
+  }
+  .mkt-card .mkt-status {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 10px; border-radius: 999px;
+    font-size: 0.74rem; font-weight: 700;
+  }
+  .mkt-card .mkt-status.ok    { color: #62ffd2; background: rgba(0,229,184,0.12); }
+  .mkt-card .mkt-status.warn  { color: #ffd066; background: rgba(255,208,102,0.10); }
+  .mkt-card .mkt-status.draft { color: #aebbe0; background: rgba(255,255,255,0.05); }
+
+  .mkt-empty {
+    grid-column: 1 / -1;
+    padding: 56px 24px;
+    text-align: center;
+    background: rgba(15,16,48,0.40);
+    border: 1px dashed rgba(124,92,255,0.28);
+    border-radius: 16px;
+    color: var(--rwaise-muted);
+  }
+  .mkt-empty h3 { color: var(--rwaise-strong); margin-bottom: 6px; }
+</style>
+{% endblock %}
+
+{% block rwaise_content %}
+<div class="rwaise-page-header">
+  <h1>Marketplace</h1>
+  <span class="pill">XLS-65 gated</span>
+</div>
+<p style="color: var(--rwaise-muted); margin-bottom: 18px;">
+  Listings filtered against your credential set. Anonymous visitors see the public catalogue;
+  trading requires the credentials each issuer specifies.
+</p>
+
+<div class="mkt-toolbar">
+  <input id="mkt-q" type="search" placeholder="Search by symbol, name, jurisdiction…">
+  <span style="color: var(--rwaise-muted); font-size: 0.86rem;">
+    {{ issuances|length }} listing{{ "s" if (issuances|length) != 1 else "" }}
+  </span>
+</div>
+
+<div class="mkt-grid" id="mkt-grid">
+  {% for issuance in issuances or [] %}
+    {% set md = issuance.metadata_json or {} %}
+    {% set spv = md.get("spv", {}) %}
+    {% set status = (issuance.status.value if issuance.status else "draft") %}
+    <a class="mkt-card" data-search="{{ md.get('symbol','') }} {{ md.get('name','') }} {{ md.get('asset_class','') }} {{ spv.get('jurisdiction','') }}"
+       href="{{ url_for('rwaise.marketplace_detail', listing_id=issuance.id) }}">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div>
+          <div class="mkt-symbol">{{ md.get("symbol", "—") }}</div>
+          <div class="mkt-name">{{ md.get("name", "(unnamed)") }}</div>
+        </div>
+        <span class="mkt-status {% if status in ['validated','submitted'] %}ok{% elif status == 'locked' %}warn{% else %}draft{% endif %}">
+          {{ status }}
+        </span>
+      </div>
+      <span class="mkt-class">{{ md.get("asset_class", "—")|replace("_", " ") }}</span>
+      <div class="mkt-row">
+        <span>Valuation</span>
+        <strong>${{ "{:,.0f}".format(md.get("valuation_usd") or 0) }}</strong>
+      </div>
+      <div class="mkt-row">
+        <span>SPV jurisdiction</span>
+        <strong>{{ spv.get("jurisdiction", "—") }}</strong>
+      </div>
+      <div class="mkt-row">
+        <span>Issuer</span>
+        <strong style="font-family: ui-monospace, monospace; font-size: 0.78rem;">
+          {{ issuance.issuer_account[:6] }}…{{ issuance.issuer_account[-4:] if issuance.issuer_account else "" }}
+        </strong>
+      </div>
+    </a>
+  {% else %}
+    <div class="mkt-empty">
+      <h3>No listings yet</h3>
+      <p>The marketplace will fill up as issuers complete the wizard. To populate sample data:
+         <code>flask rwaise seed-demo</code></p>
+      <a class="rwaise-btn" href="{{ url_for('rwaise.wizard') }}" style="margin-top:14px;">
+        Tokenize the first asset &rarr;
+      </a>
+    </div>
+  {% endfor %}
+</div>
+
+<script>
+(() => {
+  const q = document.getElementById("mkt-q");
+  const grid = document.getElementById("mkt-grid");
+  if (!q || !grid) return;
+  q.addEventListener("input", () => {
+    const term = q.value.trim().toLowerCase();
+    grid.querySelectorAll(".mkt-card").forEach(card => {
+      const hay = (card.dataset.search || "").toLowerCase();
+      card.style.display = (!term || hay.includes(term)) ? "" : "none";
+    });
+  });
+})();
+</script>
+{% endblock %}

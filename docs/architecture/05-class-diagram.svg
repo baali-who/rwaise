@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1100" font-family="-apple-system,BlinkMacSystemFont,sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a1f"/>
+      <stop offset="100%" stop-color="#1a0d2e"/>
+    </linearGradient>
+    <linearGradient id="brand" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00e5b8"/>
+      <stop offset="60%" stop-color="#7c5cff"/>
+      <stop offset="100%" stop-color="#e5318a"/>
+    </linearGradient>
+    <marker id="aA" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L0,12 L12,6 z" fill="#62ffd2"/></marker>
+    <marker id="aP" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L0,12 L12,6 z" fill="#b896ff"/></marker>
+  </defs>
+
+  <rect width="1600" height="1100" fill="url(#bg)"/>
+
+  <text x="800" y="52" text-anchor="middle" font-size="32" font-weight="800" fill="url(#brand)" letter-spacing="-1">Class Diagram · RWAiSE plugin</text>
+  <text x="800" y="80" text-anchor="middle" font-size="14" fill="#aebbe0">Modules · classes · key relationships</text>
+  <rect x="600" y="92" width="400" height="2" fill="url(#brand)" rx="1"/>
+
+  <!-- ═══ Plugin core ═══ -->
+  <g transform="translate(40,120)">
+    <rect width="380" height="180" rx="12" fill="rgba(0,229,184,0.06)" stroke="rgba(0,229,184,0.42)" stroke-width="1.5"/>
+    <text x="20" y="32" font-size="12" font-weight="700" fill="#62ffd2" letter-spacing="2">CORE</text>
+    <text x="20" y="58" fill="#f0f1ff" font-size="14" font-weight="700">plugin.py</text>
+    <line x1="20" y1="66" x2="360" y2="66" stroke="rgba(255,255,255,0.10)"/>
+    <text x="20" y="86" fill="#aebbe0" font-size="11" font-family="ui-monospace,monospace">+ register_plugin(app: Flask)</text>
+    <text x="20" y="102" fill="#aebbe0" font-size="11" font-family="ui-monospace,monospace">+ is_enabled() -&gt; bool</text>
+
+    <text x="20" y="130" fill="#f0f1ff" font-size="14" font-weight="700">feature_flag.py</text>
+    <line x1="20" y1="138" x2="360" y2="138" stroke="rgba(255,255,255,0.10)"/>
+    <text x="20" y="158" fill="#aebbe0" font-size="11" font-family="ui-monospace,monospace">+ feature_on(name) -&gt; bool</text>
+    <text x="20" y="174" fill="#aebbe0" font-size="11" font-family="ui-monospace,monospace">+ set_feature(name, value, actor)</text>
+  </g>
+
+  <!-- ═══ Models ═══ -->
+  <g transform="translate(440,120)">
+    <rect width="380" height="180" rx="12" fill="rgba(124,92,255,0.06)" stroke="rgba(124,92,255,0.42)" stroke-width="1.5"/>
+    <text x="20" y="32" font-size="12" font-weight="700" fill="#b896ff" letter-spacing="2">MODELS · models.py</text>
+    <text x="20" y="58" fill="#f0f1ff" font-size="14" font-weight="700">MPTIssuance(db.Model)</text>
+    <line x1="20" y1="66" x2="360" y2="66" stroke="rgba(255,255,255,0.10)"/>
+    <text x="20" y="86" fill="#aebbe0" font-size="11" font-family="ui-monospace,monospace">issuer_account, asset_scale, max_amount</text>
+    <text x="20" y="102" fill="#aebbe0" font-size="11" font-family="ui-monospace,monospace">can_lock, can_escrow, can_clawback ...</text>
+    <text x="20" y="118" fill="#aebbe0" font-size="11" font-family="ui-monospace,monospace">metadata_json, status, submitted_tx_hash</text>
+
+    <text x="20" y="144" fill="#f0f1ff" font-size="13" font-weight="700">MPTHolder · RedemptionTicket</text>
+    <text x="20" y="164" fill="#aebbe0" font-size="11" font-family="ui-monospace,monospace">FeatureFlagAudit · MPTAuditEvent</text>
+  </g>
+
+  <!-- ═══ Routes blueprint ═══ -->
+  <g transform="translate(840,120)">
+    <rect width="380" height="180" rx="12" fill="rgba(0,229,184,0.06)" stroke="rgba(0,229,184,0.42)" stroke-width="1.5"/>
+    <text x="20" y="32" font-size="12" font-weight="700" fill="#62ffd2" letter-spacing="2">BLUEPRINTS</text>
+    <text x="20" y="58" fill="#f0f1ff" font-size="14" font-weight="700">rwaise_bp · routes.py</text>
+    <line x1="20" y1="66" x2="360" y2="66" stroke="rgba(255,255,255,0.10)"/>
+    <text x="20" y="86" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">/rwaise/ /demo /marketplace /holdings</text>
+    <text x="20" y="102" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">/wizard /agent /redemption /audit-trail</text>
+
+    <text x="20" y="128" fill="#f0f1ff" font-size="13" font-weight="700">+ 6 sub-blueprints</text>
+    <text x="20" y="148" fill="#aebbe0" font-size="11">feature_flags · agent_caps · oauth</text>
+    <text x="20" y="164" fill="#aebbe0" font-size="11">public_api · developer_portal · agent_chat</text>
+  </g>
+
+  <!-- ═══ Forms ═══ -->
+  <g transform="translate(1240,120)">
+    <rect width="320" height="180" rx="12" fill="rgba(229,49,138,0.06)" stroke="rgba(229,49,138,0.42)" stroke-width="1.5"/>
+    <text x="20" y="32" font-size="12" font-weight="700" fill="#ff7eb6" letter-spacing="2">FORMS · forms.py</text>
+    <text x="20" y="58" fill="#f0f1ff" font-size="13" font-weight="700">9 WTForms classes</text>
+    <line x1="20" y1="66" x2="300" y2="66" stroke="rgba(255,255,255,0.10)"/>
+    <text x="20" y="84" fill="#aebbe0" font-size="11">Step1AssetClassForm</text>
+    <text x="20" y="100" fill="#aebbe0" font-size="11">Step2LegalForm · Step3DocumentsForm</text>
+    <text x="20" y="116" fill="#aebbe0" font-size="11">Step4ValuationForm · Step5KYCForm</text>
+    <text x="20" y="132" fill="#aebbe0" font-size="11">Step6TokenParamsForm</text>
+    <text x="20" y="148" fill="#aebbe0" font-size="11">Step7CapTableForm · Step8MarketplaceForm</text>
+    <text x="20" y="164" fill="#aebbe0" font-size="11">Step9ReviewForm</text>
+  </g>
+
+  <!-- ═══ AI Agents package ═══ -->
+  <g transform="translate(40,330)">
+    <rect width="780" height="320" rx="12" fill="rgba(0,229,184,0.04)" stroke="rgba(0,229,184,0.32)" stroke-width="1.5"/>
+    <text x="20" y="32" font-size="12" font-weight="700" fill="#62ffd2" letter-spacing="2">agents/  · AI agent</text>
+
+    <g transform="translate(20,52)">
+      <rect width="240" height="120" rx="10" fill="rgba(15,16,48,0.65)" stroke="rgba(0,229,184,0.32)"/>
+      <text x="14" y="22" fill="#f0f1ff" font-size="13" font-weight="700">Orchestrator</text>
+      <text x="14" y="38" fill="#aebbe0" font-size="10">orchestrator.py</text>
+      <line x1="14" y1="46" x2="226" y2="46" stroke="rgba(255,255,255,0.10)"/>
+      <text x="14" y="64" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">+ run(user, msg, history,</text>
+      <text x="14" y="78" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">      pending_tickets) -&gt; AgentReply</text>
+      <text x="14" y="94" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">- _run_real / _run_mock</text>
+      <text x="14" y="108" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">- _use_mock() -&gt; bool</text>
+    </g>
+
+    <g transform="translate(280,52)">
+      <rect width="240" height="120" rx="10" fill="rgba(15,16,48,0.65)" stroke="rgba(0,229,184,0.32)"/>
+      <text x="14" y="22" fill="#f0f1ff" font-size="13" font-weight="700">Tools</text>
+      <text x="14" y="38" fill="#aebbe0" font-size="10">tools.py</text>
+      <line x1="14" y1="46" x2="226" y2="46" stroke="rgba(255,255,255,0.10)"/>
+      <text x="14" y="64" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">+ TOOL_SCHEMAS: list</text>
+      <text x="14" y="78" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">+ dispatch(name, inputs, ctx)</text>
+      <text x="14" y="94" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">+ ToolContext{ user, cap,</text>
+      <text x="14" y="108" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">      pending_tickets, audit }</text>
+    </g>
+
+    <g transform="translate(540,52)">
+      <rect width="220" height="120" rx="10" fill="rgba(15,16,48,0.65)" stroke="rgba(0,229,184,0.32)"/>
+      <text x="14" y="22" fill="#f0f1ff" font-size="13" font-weight="700">CDP</text>
+      <text x="14" y="38" fill="#aebbe0" font-size="10">cdp.py</text>
+      <line x1="14" y1="46" x2="206" y2="46" stroke="rgba(255,255,255,0.10)"/>
+      <text x="14" y="64" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">+ cdp_spot_price(symbol)</text>
+      <text x="14" y="78" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">+ cdp_candles(symbol, days)</text>
+      <text x="14" y="94" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">+ cdp_authenticated_get</text>
+      <text x="14" y="108" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">- _cdp_hmac_headers / _jwt</text>
+    </g>
+
+    <g transform="translate(20,182)">
+      <rect width="240" height="120" rx="10" fill="rgba(15,16,48,0.65)" stroke="rgba(124,92,255,0.32)"/>
+      <text x="14" y="22" fill="#f0f1ff" font-size="13" font-weight="700">WalletUserPayer</text>
+      <text x="14" y="38" fill="#aebbe0" font-size="10">wallet_payer.py</text>
+      <line x1="14" y1="46" x2="226" y2="46" stroke="rgba(255,255,255,0.10)"/>
+      <text x="14" y="64" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">+ pay(destination, amount,</text>
+      <text x="14" y="78" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">      currency, issuer, memo)</text>
+      <text x="14" y="94" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">+ SpendingCap(reserve)</text>
+      <text x="14" y="108" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">- _decrypt_seed (req scope)</text>
+    </g>
+
+    <g transform="translate(280,182)">
+      <rect width="240" height="120" rx="10" fill="rgba(15,16,48,0.65)" stroke="rgba(229,49,138,0.32)"/>
+      <text x="14" y="22" fill="#f0f1ff" font-size="13" font-weight="700">CoinDesk Adapter</text>
+      <text x="14" y="38" fill="#aebbe0" font-size="10">coindesk.py</text>
+      <line x1="14" y1="46" x2="226" y2="46" stroke="rgba(255,255,255,0.10)"/>
+      <text x="14" y="64" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">+ spot_price(symbol)</text>
+      <text x="14" y="78" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">+ historical(symbol, days)</text>
+      <text x="14" y="94" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">+ premium_signal(symbol, payer)</text>
+      <text x="14" y="108" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">CDP → CG → Desk → mock</text>
+    </g>
+
+    <g transform="translate(540,182)">
+      <rect width="220" height="120" rx="10" fill="rgba(15,16,48,0.65)" stroke="rgba(0,229,184,0.32)"/>
+      <text x="14" y="22" fill="#f0f1ff" font-size="13" font-weight="700">Chat Routes</text>
+      <text x="14" y="38" fill="#aebbe0" font-size="10">chat_routes.py</text>
+      <line x1="14" y1="46" x2="206" y2="46" stroke="rgba(255,255,255,0.10)"/>
+      <text x="14" y="64" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">POST /api/chat</text>
+      <text x="14" y="78" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">POST /api/reset</text>
+      <text x="14" y="94" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">GET  /api/debug</text>
+      <text x="14" y="108" fill="#aebbe0" font-size="10" font-family="ui-monospace,monospace">+ session-backed tickets</text>
+    </g>
+  </g>
+
+  <!-- ═══ x402 package ═══ -->
+  <g transform="translate(840,330)">
+    <rect width="380" height="320" rx="12" fill="rgba(229,49,138,0.04)" stroke="rgba(229,49,138,0.32)" stroke-width="1.5"/>
+    <text x="20" y="32" font-size="12" font-weight="700" fill="#ff7eb6" letter-spacing="2">x402/  · protocol</text>
+
+    <g transform="translate(20,52)">
+      <rect width="340" height="80" rx="10" fill="rgba(15,16,48,0.65)" stroke="rgba(229,49,138,0.32)"/>
+      <text x="14" y="22" fill="#f0f1ff" font-size="13" font-weight="700">@x402_protected · middleware.py</text>
+      <line x1="14" y1="30" x2="326" y2="30" stroke="rgba(255,255,255,0.10)"/>
+      <text x="14" y="50" fill="#aebbe0" font-size="11">Returns 402 + payment_requirements when no proof</text>
+      <text x="14" y="66" fill="#aebbe0" font-size="11">Verifies X-Payment proof → calls underlying handler</text>
+    </g>
+
+    <g transform="translate(20,142)">
+      <rect width="340" height="70" rx="10" fill="rgba(15,16,48,0.65)" stroke="rgba(229,49,138,0.32)"/>
+      <text x="14" y="22" fill="#f0f1ff" font-size="13" font-weight="700">verify_payment_proof · facilitator.py</text>
+      <line x1="14" y1="30" x2="326" y2="30" stroke="rgba(255,255,255,0.10)"/>
+      <text x="14" y="50" fill="#aebbe0" font-size="11">XRPL ledger lookup · destination + amount + nonce</text>
+    </g>
+
+    <g transform="translate(20,222)">
+      <rect width="340" height="80" rx="10" fill="rgba(15,16,48,0.65)" stroke="rgba(229,49,138,0.32)"/>
+      <text x="14" y="22" fill="#f0f1ff" font-size="13" font-weight="700">pay_and_retry · client.py</text>
+      <line x1="14" y1="30" x2="326" y2="30" stroke="rgba(255,255,255,0.10)"/>
+      <text x="14" y="50" fill="#aebbe0" font-size="11">SDK helper · GET → 402 → pay → retry → 200</text>
+      <text x="14" y="66" fill="#aebbe0" font-size="11">+ XrplPayer (for SDK consumers · raw seed)</text>
+    </g>
+  </g>
+
+  <!-- ═══ Wizard / services ═══ -->
+  <g transform="translate(1240,330)">
+    <rect width="320" height="320" rx="12" fill="rgba(124,92,255,0.04)" stroke="rgba(124,92,255,0.32)" stroke-width="1.5"/>
+    <text x="20" y="32" font-size="12" font-weight="700" fill="#b896ff" letter-spacing="2">WIZARD · services/</text>
+
+    <g transform="translate(20,52)">
+      <rect width="280" height="80" rx="10" fill="rgba(15,16,48,0.65)" stroke="rgba(124,92,255,0.32)"/>
+      <text x="14" y="22" fill="#f0f1ff" font-size="13" font-weight="700">wizard_controller.py</text>
+      <line x1="14" y1="30" x2="266" y2="30" stroke="rgba(255,255,255,0.10)"/>
+      <text x="14" y="50" fill="#aebbe0" font-size="11">9-step state machine · session-backed</text>
+      <text x="14" y="66" fill="#aebbe0" font-size="11">_broadcast_simulated() / _broadcast_live()</text>
+    </g>
+
+    <g transform="translate(20,142)">
+      <rect width="280" height="60" rx="10" fill="rgba(15,16,48,0.65)" stroke="rgba(124,92,255,0.32)"/>
+      <text x="14" y="22" fill="#f0f1ff" font-size="12" font-weight="700">services/ai_copilot.py</text>
+      <text x="14" y="44" fill="#aebbe0" font-size="11">Claude per-step suggestions</text>
+    </g>
+    <g transform="translate(20,212)">
+      <rect width="280" height="60" rx="10" fill="rgba(15,16,48,0.65)" stroke="rgba(124,92,255,0.32)"/>
+      <text x="14" y="22" fill="#f0f1ff" font-size="12" font-weight="700">cap_table_loader.py</text>
+      <text x="14" y="44" fill="#aebbe0" font-size="11">CSV parse + KYC/sanctions</text>
+    </g>
+    <g transform="translate(20,282)">
+      <rect width="280" height="40" rx="10" fill="rgba(15,16,48,0.65)" stroke="rgba(124,92,255,0.32)"/>
+      <text x="14" y="22" fill="#f0f1ff" font-size="12">credential_issuer · orderbook · permissioned_dex</text>
+    </g>
+  </g>
+
+  <!-- ═══ Admin / api ═══ -->
+  <g transform="translate(40,680)">
+    <rect width="780" height="200" rx="12" fill="rgba(255,208,102,0.04)" stroke="rgba(255,208,102,0.32)" stroke-width="1.5"/>
+    <text x="20" y="32" font-size="12" font-weight="700" fill="#ffd066" letter-spacing="2">admin/  · sub-blueprints</text>
+
+    <g transform="translate(20,52)">
+      <rect width="240" height="130" rx="10" fill="rgba(15,16,48,0.65)" stroke="rgba(255,208,102,0.32)"/>
+      <text x="14" y="22" fill="#f0f1ff" font-size="13" font-weight="700">feature_flags.py</text>
+      <line x1="14" y1="30" x2="226" y2="30" stroke="rgba(255,255,255,0.10)"/>
+      <text x="14" y="50" fill="#aebbe0" font-size="11">+ index() · render the toggle UI</text>
+      <text x="14" y="66" fill="#aebbe0" font-size="11">+ toggle() · POST update</text>
+      <text x="14" y="82" fill="#aebbe0" font-size="11">+ audit() · view flag history</text>
+      <text x="14" y="106" fill="#62ffd2" font-size="11" font-weight="700">11 sub-flags</text>
+      <text x="14" y="122" fill="#aebbe0" font-size="10">Master + WIZARD/AI/x402/...</text>
+    </g>
+
+    <g transform="translate(280,52)">
+      <rect width="240" height="130" rx="10" fill="rgba(15,16,48,0.65)" stroke="rgba(255,208,102,0.32)"/>
+      <text x="14" y="22" fill="#f0f1ff" font-size="13" font-weight="700">agent_caps.py</text>
+      <line x1="14" y1="30" x2="226" y2="30" stroke="rgba(255,255,255,0.10)"/>
+      <text x="14" y="50" fill="#aebbe0" font-size="11">+ Per-user spending caps</text>
+      <text x="14" y="66" fill="#aebbe0" font-size="11">+ View aggregate cost</text>
+      <text x="14" y="82" fill="#aebbe0" font-size="11">+ Set per-tenant overrides</text>
+      <text x="14" y="106" fill="#aebbe0" font-size="11">Default $1.00 / session</text>
+      <text x="14" y="122" fill="#aebbe0" font-size="11">Configurable in DB</text>
+    </g>
+
+    <g transform="translate(540,52)">
+      <rect width="220" height="130" rx="10" fill="rgba(15,16,48,0.65)" stroke="rgba(255,208,102,0.32)"/>
+      <text x="14" y="22" fill="#f0f1ff" font-size="13" font-weight="700">hooks.py</text>
+      <line x1="14" y1="30" x2="206" y2="30" stroke="rgba(255,255,255,0.10)"/>
+      <text x="14" y="50" fill="#aebbe0" font-size="11">+ register_admin_hooks(app)</text>
+      <text x="14" y="66" fill="#aebbe0" font-size="11">Injects rwaise_admin_links</text>
+      <text x="14" y="82" fill="#aebbe0" font-size="11">into Gopnik's admin sidebar</text>
+      <text x="14" y="106" fill="#aebbe0" font-size="11">via context_processor</text>
+    </g>
+  </g>
+
+  <g transform="translate(840,680)">
+    <rect width="720" height="200" rx="12" fill="rgba(124,92,255,0.04)" stroke="rgba(124,92,255,0.32)" stroke-width="1.5"/>
+    <text x="20" y="32" font-size="12" font-weight="700" fill="#b896ff" letter-spacing="2">api/  · developer platform</text>
+
+    <g transform="translate(20,52)">
+      <rect width="220" height="130" rx="10" fill="rgba(15,16,48,0.65)" stroke="rgba(124,92,255,0.32)"/>
+      <text x="14" y="22" fill="#f0f1ff" font-size="13" font-weight="700">api/oauth/</text>
+      <line x1="14" y1="30" x2="206" y2="30" stroke="rgba(255,255,255,0.10)"/>
+      <text x="14" y="50" fill="#aebbe0" font-size="11">OAuth 2.0 client_credentials</text>
+      <text x="14" y="66" fill="#aebbe0" font-size="11">PBKDF2-200k secret hashing</text>
+      <text x="14" y="82" fill="#aebbe0" font-size="11">JWT bearer tokens · 1 h TTL</text>
+    </g>
+    <g transform="translate(260,52)">
+      <rect width="220" height="130" rx="10" fill="rgba(15,16,48,0.65)" stroke="rgba(124,92,255,0.32)"/>
+      <text x="14" y="22" fill="#f0f1ff" font-size="13" font-weight="700">api/public/</text>
+      <line x1="14" y1="30" x2="206" y2="30" stroke="rgba(255,255,255,0.10)"/>
+      <text x="14" y="50" fill="#aebbe0" font-size="11">Paid public endpoints</text>
+      <text x="14" y="66" fill="#aebbe0" font-size="11">Auth: OAuth Bearer OR x402</text>
+      <text x="14" y="82" fill="#aebbe0" font-size="11">List/Detail/Submit MPT issuance</text>
+    </g>
+    <g transform="translate(500,52)">
+      <rect width="220" height="130" rx="10" fill="rgba(15,16,48,0.65)" stroke="rgba(124,92,255,0.32)"/>
+      <text x="14" y="22" fill="#f0f1ff" font-size="13" font-weight="700">api/developer_portal/</text>
+      <line x1="14" y1="30" x2="206" y2="30" stroke="rgba(255,255,255,0.10)"/>
+      <text x="14" y="50" fill="#aebbe0" font-size="11">Key creation UI</text>
+      <text x="14" y="66" fill="#aebbe0" font-size="11">Per-key usage analytics</text>
+      <text x="14" y="82" fill="#aebbe0" font-size="11">Rotate / revoke flow</text>
+    </g>
+  </g>
+
+  <!-- ═══ Relationship arrows ═══ -->
+  <text x="40" y="940" font-size="12" font-weight="700" fill="#7c5cff" letter-spacing="2">KEY RELATIONSHIPS</text>
+
+  <!-- Orchestrator -> Tools -->
+  <path d="M260,460 L280,460" stroke="#62ffd2" stroke-width="1.5" marker-end="url(#aA)"/>
+  <text x="270" y="450" font-size="9" fill="#62ffd2" text-anchor="middle">dispatch()</text>
+
+  <!-- Tools -> WalletUserPayer + CDP + CoinDesk -->
+  <path d="M400,170 L260,182" stroke="#62ffd2" stroke-width="1.5" marker-end="url(#aA)"/>
+  <path d="M400,170 L400,182" stroke="#62ffd2" stroke-width="1.5" marker-end="url(#aA)"/>
+  <path d="M400,170 L600,170" stroke="#62ffd2" stroke-width="1.5" marker-end="url(#aA)"/>
+
+  <!-- CoinDesk -> CDP -->
+  <path d="M400,242 L540,170" stroke="#ff7eb6" stroke-width="1.5" marker-end="url(#aA)"/>
+  <text x="478" y="194" font-size="9" fill="#ff7eb6" text-anchor="middle">primary src</text>
+
+  <!-- WalletPayer -> x402.client -->
+  <path d="M260,242 L840,170" stroke="#b896ff" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#aP)"/>
+  <text x="550" y="206" font-size="9" fill="#b896ff" text-anchor="middle">conforms to Payer protocol</text>
+
+  <!-- Models -> Routes -->
+  <path d="M820,210 L840,210" stroke="#b896ff" stroke-width="1.5" marker-end="url(#aP)"/>
+  <text x="830" y="200" font-size="9" fill="#b896ff" text-anchor="middle">SQLAlchemy</text>
+
+  <!-- Forms -> wizard -->
+  <path d="M1400,300 L1400,330" stroke="#ff7eb6" stroke-width="1.5" marker-end="url(#aA)"/>
+  <text x="1420" y="316" font-size="9" fill="#ff7eb6">used by</text>
+
+  <text x="40" y="1080" font-size="11" fill="#7d89aa">github.com/baali-who/rwaise · MIT · iter-21</text>
+  <text x="1560" y="1080" text-anchor="end" font-size="11" fill="#7d89aa">RWAiSE · Class Diagram · 2026</text>
+</svg>

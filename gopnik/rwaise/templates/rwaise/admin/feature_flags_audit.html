@@ -1,0 +1,12 @@
+{% extends "rwaise/_base.html" %}
+{% block title %}Feature flag audit — RWAiSE{% endblock %}
+{% block rwaise_content %}
+<div class="rwaise-page-header"><h1>Feature flag audit</h1></div>
+<table class="rwaise-table">
+<thead><tr><th>When</th><th>Flag</th><th>New value</th><th>Actor</th><th>Reason</th></tr></thead>
+<tbody>
+{% for r in rows %}
+<tr><td>{{ r.created_at.strftime("%Y-%m-%d %H:%M") }}</td><td><code>{{ r.key }}</code></td><td>{% if r.value %}<span class="rwaise-tag-active">ON</span>{% else %}<span class="rwaise-tag-disabled">OFF</span>{% endif %}</td><td>{{ r.actor_user_id or "—" }}</td><td>{{ r.reason or "—" }}</td></tr>
+{% endfor %}
+</tbody></table>
+{% endblock %}

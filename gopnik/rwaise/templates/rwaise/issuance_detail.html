@@ -1,0 +1,120 @@
+{% extends "rwaise/_base.html" %}
+{% block title %}Issuance #{{ issuance.id if issuance else "—" }} — RWAiSE{% endblock %}
+
+{% block head %}
+{{ super() }}
+<style>
+  .id-grid { display: grid; gap: 18px; grid-template-columns: 2fr 1fr; }
+  @media (max-width: 880px) { .id-grid { grid-template-columns: 1fr; } }
+  .id-meta dt {
+    color: var(--rwaise-muted); font-size: 0.78rem;
+    text-transform: uppercase; letter-spacing: 0.06em; margin-top: 12px;
+  }
+  .id-meta dd { margin: 4px 0 0; color: var(--rwaise-strong); word-break: break-all; }
+  .id-flag {
+    display: inline-block; margin: 4px 4px 0 0;
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 0.74rem; font-weight: 600;
+  }
+  .id-flag.on  { color: #62ffd2; background: rgba(0,229,184,0.12);
+                  border: 1px solid rgba(0,229,184,0.26); }
+  .id-flag.off { color: #aebbe0; background: rgba(255,255,255,0.05);
+                  border: 1px solid rgba(255,255,255,0.10); }
+  .id-events {
+    margin-top: 0;
+    max-height: 480px; overflow-y: auto;
+  }
+  .id-event {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex; gap: 12px; align-items: baseline;
+    font-size: 0.86rem;
+  }
+  .id-event:last-child { border-bottom: none; }
+  .id-event .when {
+    color: var(--rwaise-muted);
+    font-family: ui-monospace, monospace; font-size: 0.78rem;
+    min-width: 130px;
+  }
+  .id-event .what { color: var(--rwaise-strong); flex: 1; }
+  code.tx { font-family: ui-monospace, monospace; font-size: 0.78rem;
+             background: rgba(0,0,0,0.30); padding: 4px 8px; border-radius: 6px;
+             color: #c8d3ee; word-break: break-all; }
+</style>
+{% endblock %}
+
+{% block rwaise_content %}
+{% set md = (issuance.metadata_json if issuance else {}) or {} %}
+{% set spv = md.get("spv", {}) %}
+<div class="rwaise-page-header">
+  <h1>{{ md.get("symbol", "Issuance") }}</h1>
+  <span class="pill">#{{ issuance.id if issuance else "—" }}</span>
+</div>
+
+{% if issuance %}
+<p style="color: var(--rwaise-muted); margin-bottom: 24px;">
+  {{ md.get("name", "") }} &middot;
+  <strong style="color: var(--rwaise-strong);">{{ md.get("asset_class", "—")|replace("_", " ") }}</strong>
+  &middot; {{ spv.get("jurisdiction", "—") }}
+</p>
+
+<div class="id-grid">
+  <div class="rwaise-card">
+    <h3 style="margin-top: 0;">Audit timeline</h3>
+    <p style="color: var(--rwaise-muted); font-size: 0.86rem; margin-bottom: 14px;">
+      Last 200 events. Append-only.
+    </p>
+    <div class="id-events">
+      {% for ev in audit or [] %}
+        <div class="id-event">
+          <span class="when">{{ ev.created_at.strftime("%m-%d %H:%M:%S") if ev.created_at else "—" }}</span>
+          <span class="what">
+            <strong>{{ ev.action or "—" }}</strong>
+            {% if ev.tx_hash %} · <code class="tx">{{ ev.tx_hash[:14] }}…</code>{% endif %}
+          </span>
+        </div>
+      {% else %}
+        <div style="padding: 24px; text-align: center; color: var(--rwaise-muted);">
+          No events yet for this issuance.
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="rwaise-card">
+    <h3 style="margin-top: 0;">Token capabilities</h3>
+    <span class="id-flag {% if issuance.can_lock %}on{% else %}off{% endif %}">can_lock</span>
+    <span class="id-flag {% if issuance.require_auth %}on{% else %}off{% endif %}">require_auth</span>
+    <span class="id-flag {% if issuance.can_escrow %}on{% else %}off{% endif %}">can_escrow</span>
+    <span class="id-flag {% if issuance.can_trade %}on{% else %}off{% endif %}">can_trade</span>
+    <span class="id-flag {% if issuance.can_transfer %}on{% else %}off{% endif %}">can_transfer</span>
+    <span class="id-flag {% if issuance.can_clawback %}on{% else %}off{% endif %}">can_clawback</span>
+
+    <dl class="id-meta">
+      <dt>Status</dt>
+      <dd>{{ issuance.status.value if issuance.status else "—" }}</dd>
+      <dt>Issuer account</dt>
+      <dd><code class="tx">{{ issuance.issuer_account or "—" }}</code></dd>
+      {% if issuance.issuance_id %}
+      <dt>MPT issuance ID</dt>
+      <dd><code class="tx">{{ issuance.issuance_id }}</code></dd>
+      {% endif %}
+      {% if issuance.submitted_tx_hash %}
+      <dt>Submission tx</dt>
+      <dd><code class="tx">{{ issuance.submitted_tx_hash }}</code></dd>
+      {% endif %}
+      <dt>Asset scale</dt>
+      <dd>{{ issuance.asset_scale }}</dd>
+      <dt>Transfer fee</dt>
+      <dd>{{ issuance.transfer_fee or 0 }} bps</dd>
+      <dt>Maximum supply</dt>
+      <dd>{{ "{:,}".format(issuance.maximum_amount) if issuance.maximum_amount else "unbounded" }}</dd>
+    </dl>
+  </div>
+</div>
+{% else %}
+<div class="rwaise-card">
+  <p style="color: var(--rwaise-muted);">Issuance not found.</p>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,72 @@
+{# RWAiSE plugin — top-nav fragment.
+
+   Included exactly once from gopnik/templates/base.html via:
+
+       {% include 'rwaise/_nav_tab.html' %}
+
+   When RWAISE_ENABLED is off, renders nothing. Style classes match
+   Gopnik's existing nav (tweak ``.rwaise-nav-tab`` if your theme
+   differs). #}
+
+{% if rwaise_plugin_enabled %}
+  {% set root = rwaise_nav_root %}
+  <li class="nav-item rwaise-nav-tab dropdown">
+    {# iter-17 fix: href="#" + role="button" so a click on the parent
+       opens the dropdown instead of navigating away. The "Overview"
+       entry inside the dropdown takes the user to the RWAiSE home. #}
+    <a class="nav-link dropdown-toggle"
+       href="#"
+       role="button"
+       data-bs-toggle="dropdown"
+       aria-expanded="false"
+       onclick="event.preventDefault();">
+      <span class="rwaise-nav-spark" aria-hidden="true"></span>
+      {{ root.label }}
+      {% if root.badge %}<span class="badge bg-rwaise ms-1">{{ root.badge }}</span>{% endif %}
+    </a>
+    <ul class="dropdown-menu rwaise-nav-menu">
+      <li>
+        <a class="dropdown-item" href="{{ root.href }}">
+          <span class="rwaise-nav-icon">🏠</span> Overview
+        </a>
+      </li>
+      <li><hr class="dropdown-divider" style="border-color: rgba(255,255,255,0.06);"></li>
+      {% for link in rwaise_nav_links %}
+        <li>
+          <a class="dropdown-item" href="{{ link.href }}">
+            {{ link.label }}
+            {% if link.badge %}
+              <span class="badge bg-rwaise ms-1">{{ link.badge }}</span>
+            {% endif %}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </li>
+
+  {# Lightweight, scoped CSS. Drop into static/css/rwaise.css for prod;
+     inlined here so the patch is one file. #}
+  <style>
+    .rwaise-nav-tab .rwaise-nav-spark {
+      display: inline-block;
+      width: 8px; height: 8px;
+      margin-right: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00e5b8, #7c5cff);
+      box-shadow: 0 0 0 3px rgba(0, 229, 184, 0.18);
+      vertical-align: middle;
+    }
+    .rwaise-nav-tab .badge.bg-rwaise {
+      background: linear-gradient(120deg, #00e5b8, #7c5cff);
+      color: #06060f;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .rwaise-nav-menu {
+      min-width: 240px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(14px) saturate(160%);
+    }
+  </style>
+{% endif %}

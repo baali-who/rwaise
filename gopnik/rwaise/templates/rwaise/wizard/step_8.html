@@ -1,0 +1,10 @@
+{% extends "rwaise/wizard/shell.html" %}
+{% block wizard_step %}
+{% set step_meta = {
+  "title": "Step 8 · Marketplace & secondary",
+  "lede": "Choose the quote currency for marketplace listings and whether to enable the XLS-66-ready order book + 4-eyes redemption pipeline.",
+  "tip": "RLUSD on-ledger is recommended for U.S. issuances — settlement is atomic with the MPT and avoids off-ledger bridge risk.",
+  "two_col": False,
+} %}
+{% include 'rwaise/wizard/_step_form.html' %}
+{% endblock %}

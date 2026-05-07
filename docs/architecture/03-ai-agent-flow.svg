@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1100" font-family="-apple-system,BlinkMacSystemFont,sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a1f"/>
+      <stop offset="100%" stop-color="#1a0d2e"/>
+    </linearGradient>
+    <linearGradient id="brand" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00e5b8"/>
+      <stop offset="60%" stop-color="#7c5cff"/>
+      <stop offset="100%" stop-color="#e5318a"/>
+    </linearGradient>
+    <linearGradient id="brain" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00e5b8"/>
+      <stop offset="50%" stop-color="#7c5cff"/>
+      <stop offset="100%" stop-color="#e5318a"/>
+    </linearGradient>
+    <marker id="aA" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L0,12 L12,6 z" fill="#62ffd2"/></marker>
+    <marker id="aP" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L0,12 L12,6 z" fill="#b896ff"/></marker>
+    <marker id="aG" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L0,12 L12,6 z" fill="#ffd066"/></marker>
+  </defs>
+
+  <rect width="1600" height="1100" fill="url(#bg)"/>
+
+  <text x="800" y="52" text-anchor="middle" font-size="32" font-weight="800" fill="url(#brand)" letter-spacing="-1">AI Agent Flow · "Should I buy XRP?"</text>
+  <text x="800" y="80" text-anchor="middle" font-size="14" fill="#aebbe0">10-step end-to-end trace · Bedrock + tools + XRPL broadcast</text>
+  <rect x="600" y="92" width="400" height="2" fill="url(#brand)" rx="1"/>
+
+  <!-- Brain in the center -->
+  <g transform="translate(700,420)">
+    <circle cx="100" cy="100" r="120" fill="rgba(124,92,255,0.10)" filter="url(#glow)"/>
+    <circle cx="100" cy="100" r="100" fill="url(#brain)"/>
+    <text x="100" y="92" text-anchor="middle" font-size="44" font-weight="900" fill="#06061a">RW</text>
+    <text x="100" y="120" text-anchor="middle" font-size="14" font-weight="700" fill="#06061a">Claude Sonnet 4.6</text>
+  </g>
+
+  <!-- 10 steps around the brain -->
+  <!-- Step 1 -->
+  <g transform="translate(60,150)">
+    <rect width="320" height="80" rx="14" fill="rgba(15,16,48,0.65)" stroke="rgba(0,229,184,0.42)" stroke-width="1.5"/>
+    <circle cx="22" cy="22" r="14" fill="#62ffd2"/>
+    <text x="22" y="27" text-anchor="middle" fill="#06061a" font-size="14" font-weight="800">1</text>
+    <text x="46" y="22" fill="#62ffd2" font-size="10" font-weight="700" letter-spacing="1.5">BROWSER</text>
+    <text x="46" y="44" fill="#f0f1ff" font-size="13" font-weight="700">POST /rwaise/agent/api/chat</text>
+    <text x="46" y="60" fill="#aebbe0" font-size="11">{ "message": "Should I buy XRP?" }</text>
+    <text x="46" y="74" fill="#aebbe0" font-size="11">+ X-CSRFToken header</text>
+  </g>
+
+  <!-- Step 2 -->
+  <g transform="translate(60,260)">
+    <rect width="320" height="80" rx="14" fill="rgba(15,16,48,0.65)" stroke="rgba(0,229,184,0.42)" stroke-width="1.5"/>
+    <circle cx="22" cy="22" r="14" fill="#62ffd2"/>
+    <text x="22" y="27" text-anchor="middle" fill="#06061a" font-size="14" font-weight="800">2</text>
+    <text x="46" y="22" fill="#62ffd2" font-size="10" font-weight="700" letter-spacing="1.5">ORCHESTRATOR</text>
+    <text x="46" y="44" fill="#f0f1ff" font-size="13" font-weight="700">build Bedrock request</text>
+    <text x="46" y="60" fill="#aebbe0" font-size="11">system_prompt + 6 tool schemas</text>
+    <text x="46" y="74" fill="#aebbe0" font-size="11">+ history (Flask session)</text>
+  </g>
+
+  <!-- Step 3 -->
+  <g transform="translate(60,370)">
+    <rect width="320" height="80" rx="14" fill="rgba(15,16,48,0.65)" stroke="rgba(229,49,138,0.42)" stroke-width="1.5"/>
+    <circle cx="22" cy="22" r="14" fill="#ff7eb6"/>
+    <text x="22" y="27" text-anchor="middle" fill="#06061a" font-size="14" font-weight="800">3</text>
+    <text x="46" y="22" fill="#ff7eb6" font-size="10" font-weight="700" letter-spacing="1.5">TOOL · get_spot_price</text>
+    <text x="46" y="44" fill="#f0f1ff" font-size="13" font-weight="700">{ "symbol": "XRP" }</text>
+    <text x="46" y="60" fill="#aebbe0" font-size="11">→ Coinbase CDP free ticker</text>
+    <text x="46" y="74" fill="#62ffd2" font-size="11">$2.85 (source: coinbase-cdp) · cost $0</text>
+  </g>
+
+  <!-- Step 4 -->
+  <g transform="translate(60,480)">
+    <rect width="320" height="80" rx="14" fill="rgba(15,16,48,0.65)" stroke="rgba(229,49,138,0.62)" stroke-width="2"/>
+    <circle cx="22" cy="22" r="14" fill="#ff7eb6"/>
+    <text x="22" y="27" text-anchor="middle" fill="#06061a" font-size="14" font-weight="800">4</text>
+    <text x="46" y="22" fill="#ff7eb6" font-size="10" font-weight="700" letter-spacing="1.5">TOOL · get_premium_signal (x402)</text>
+    <text x="46" y="44" fill="#f0f1ff" font-size="13" font-weight="700">{ "symbol": "XRP", "max_pay_usd": 0.05 }</text>
+    <text x="46" y="60" fill="#aebbe0" font-size="11">402 → pay 50k drops → 200</text>
+    <text x="46" y="74" fill="#62ffd2" font-size="11">cost $0.025 · tx hash on-ledger</text>
+  </g>
+
+  <!-- Step 5 -->
+  <g transform="translate(60,590)">
+    <rect width="320" height="80" rx="14" fill="rgba(15,16,48,0.65)" stroke="rgba(124,92,255,0.42)" stroke-width="1.5"/>
+    <circle cx="22" cy="22" r="14" fill="#b896ff"/>
+    <text x="22" y="27" text-anchor="middle" fill="#06061a" font-size="14" font-weight="800">5</text>
+    <text x="46" y="22" fill="#b896ff" font-size="10" font-weight="700" letter-spacing="1.5">CLAUDE REASONS</text>
+    <text x="46" y="44" fill="#f0f1ff" font-size="13" font-weight="700">spot + signal → recommendation</text>
+    <text x="46" y="60" fill="#aebbe0" font-size="11">"BUY XRP, 78% confidence,</text>
+    <text x="46" y="74" fill="#aebbe0" font-size="11"> 7-day momentum +5.2%"</text>
+  </g>
+
+  <!-- Step 6 (right side) -->
+  <g transform="translate(1220,150)">
+    <rect width="320" height="80" rx="14" fill="rgba(15,16,48,0.65)" stroke="rgba(255,208,102,0.42)" stroke-width="1.5"/>
+    <circle cx="22" cy="22" r="14" fill="#ffd066"/>
+    <text x="22" y="27" text-anchor="middle" fill="#06061a" font-size="14" font-weight="800">6</text>
+    <text x="46" y="22" fill="#ffd066" font-size="10" font-weight="700" letter-spacing="1.5">USER FOLLOW-UP</text>
+    <text x="46" y="44" fill="#f0f1ff" font-size="13" font-weight="700">"Send 5 XRP from master to r..."</text>
+    <text x="46" y="60" fill="#aebbe0" font-size="11">→ propose_transaction tool</text>
+    <text x="46" y="74" fill="#aebbe0" font-size="11">returns ticket_id + 6-digit code</text>
+  </g>
+
+  <!-- Step 7 -->
+  <g transform="translate(1220,260)">
+    <rect width="320" height="80" rx="14" fill="rgba(15,16,48,0.65)" stroke="rgba(255,208,102,0.42)" stroke-width="1.5"/>
+    <circle cx="22" cy="22" r="14" fill="#ffd066"/>
+    <text x="22" y="27" text-anchor="middle" fill="#06061a" font-size="14" font-weight="800">7</text>
+    <text x="46" y="22" fill="#ffd066" font-size="10" font-weight="700" letter-spacing="1.5">USER READS CODE BACK</text>
+    <text x="46" y="44" fill="#f0f1ff" font-size="13" font-weight="700">"413207"</text>
+    <text x="46" y="60" fill="#aebbe0" font-size="11">single-use · 5-min TTL</text>
+    <text x="46" y="74" fill="#aebbe0" font-size="11">stored in Flask session</text>
+  </g>
+
+  <!-- Step 8 -->
+  <g transform="translate(1220,370)">
+    <rect width="320" height="80" rx="14" fill="rgba(15,16,48,0.65)" stroke="rgba(0,229,184,0.42)" stroke-width="1.5"/>
+    <circle cx="22" cy="22" r="14" fill="#62ffd2"/>
+    <text x="22" y="27" text-anchor="middle" fill="#06061a" font-size="14" font-weight="800">8</text>
+    <text x="46" y="22" fill="#62ffd2" font-size="10" font-weight="700" letter-spacing="1.5">TOOL · confirm_transaction</text>
+    <text x="46" y="44" fill="#f0f1ff" font-size="13" font-weight="700">WalletUserPayer.pay(...)</text>
+    <text x="46" y="60" fill="#aebbe0" font-size="11">decrypt seed (req scope only)</text>
+    <text x="46" y="74" fill="#aebbe0" font-size="11">autofill_and_sign(Payment)</text>
+  </g>
+
+  <!-- Step 9 -->
+  <g transform="translate(1220,480)">
+    <rect width="320" height="80" rx="14" fill="rgba(15,16,48,0.65)" stroke="rgba(255,208,102,0.42)" stroke-width="1.5"/>
+    <circle cx="22" cy="22" r="14" fill="#ffd066"/>
+    <text x="22" y="27" text-anchor="middle" fill="#06061a" font-size="14" font-weight="800">9</text>
+    <text x="46" y="22" fill="#ffd066" font-size="10" font-weight="700" letter-spacing="1.5">XRPL VALIDATES</text>
+    <text x="46" y="44" fill="#f0f1ff" font-size="13" font-weight="700">submit_and_wait()</text>
+    <text x="46" y="60" fill="#aebbe0" font-size="11">~3-5 s consensus</text>
+    <text x="46" y="74" fill="#aebbe0" font-size="11">tx_hash returned to caller</text>
+  </g>
+
+  <!-- Step 10 -->
+  <g transform="translate(1220,590)">
+    <rect width="320" height="80" rx="14" fill="rgba(15,16,48,0.65)" stroke="rgba(124,92,255,0.42)" stroke-width="1.5"/>
+    <circle cx="22" cy="22" r="14" fill="#b896ff"/>
+    <text x="22" y="27" text-anchor="middle" fill="#06061a" font-size="14" font-weight="800">10</text>
+    <text x="46" y="22" fill="#b896ff" font-size="10" font-weight="700" letter-spacing="1.5">AUDIT + REPLY</text>
+    <text x="46" y="44" fill="#f0f1ff" font-size="13" font-weight="700">8 events written to AuditLog</text>
+    <text x="46" y="60" fill="#aebbe0" font-size="11">JSON response → browser</text>
+    <text x="46" y="74" fill="#aebbe0" font-size="11">UI renders Markdown reply</text>
+  </g>
+
+  <!-- The 6 tool registry at the bottom -->
+  <g transform="translate(60,750)">
+    <rect width="1480" height="280" rx="20" fill="rgba(15,16,48,0.55)" stroke="rgba(124,92,255,0.32)" stroke-width="1.5"/>
+    <text x="20" y="36" font-size="13" font-weight="700" fill="#7c5cff" letter-spacing="2">TOOL REGISTRY</text>
+
+    <g transform="translate(20,60)">
+      <rect width="240" height="200" rx="12" fill="rgba(0,229,184,0.06)" stroke="rgba(0,229,184,0.32)"/>
+      <rect x="14" y="14" width="36" height="20" rx="5" fill="rgba(0,229,184,0.20)"/>
+      <text x="32" y="28" font-size="11" font-weight="800" fill="#62ffd2" text-anchor="middle">1</text>
+      <text x="60" y="30" fill="#f0f1ff" font-size="13" font-weight="700">get_spot_price</text>
+      <text x="14" y="58" fill="#62ffd2" font-size="10" font-weight="700">$0 · FREE</text>
+      <text x="14" y="80" fill="#aebbe0" font-size="11">CoinbaseAdvanced Trade</text>
+      <text x="14" y="96" fill="#aebbe0" font-size="11">/market/products/{id}/ticker</text>
+      <text x="14" y="120" fill="#aebbe0" font-size="11">In-process 30 s cache</text>
+      <text x="14" y="160" fill="#aebbe0" font-size="11">Fallback chain:</text>
+      <text x="14" y="176" fill="#aebbe0" font-size="11">CDP → CoinGecko</text>
+      <text x="14" y="192" fill="#aebbe0" font-size="11">→ CoinDesk → mock</text>
+    </g>
+    <g transform="translate(280,60)">
+      <rect width="240" height="200" rx="12" fill="rgba(0,229,184,0.06)" stroke="rgba(0,229,184,0.32)"/>
+      <rect x="14" y="14" width="36" height="20" rx="5" fill="rgba(0,229,184,0.20)"/>
+      <text x="32" y="28" font-size="11" font-weight="800" fill="#62ffd2" text-anchor="middle">2</text>
+      <text x="60" y="30" fill="#f0f1ff" font-size="13" font-weight="700">get_historical_close</text>
+      <text x="14" y="58" fill="#62ffd2" font-size="10" font-weight="700">$0 · FREE</text>
+      <text x="14" y="80" fill="#aebbe0" font-size="11">Coinbase Exchange</text>
+      <text x="14" y="96" fill="#aebbe0" font-size="11">/products/{id}/candles</text>
+      <text x="14" y="120" fill="#aebbe0" font-size="11">Daily OHLCV, 1-90 days</text>
+      <text x="14" y="160" fill="#aebbe0" font-size="11">Returns:</text>
+      <text x="14" y="176" fill="#aebbe0" font-size="11">[(day, close_usd), ...]</text>
+      <text x="14" y="192" fill="#aebbe0" font-size="11">ascending order</text>
+    </g>
+    <g transform="translate(540,60)">
+      <rect width="240" height="200" rx="12" fill="rgba(229,49,138,0.06)" stroke="rgba(229,49,138,0.42)"/>
+      <rect x="14" y="14" width="36" height="20" rx="5" fill="rgba(229,49,138,0.22)"/>
+      <text x="32" y="28" font-size="11" font-weight="800" fill="#ff7eb6" text-anchor="middle">3</text>
+      <text x="60" y="30" fill="#f0f1ff" font-size="13" font-weight="700">get_premium_signal</text>
+      <text x="14" y="58" fill="#ff7eb6" font-size="10" font-weight="700">≤ $0.05 · x402</text>
+      <text x="14" y="80" fill="#aebbe0" font-size="11">Either real x402 facilitator</text>
+      <text x="14" y="96" fill="#aebbe0" font-size="11">or synthetic from real</text>
+      <text x="14" y="112" fill="#aebbe0" font-size="11">7-day Coinbase momentum</text>
+      <text x="14" y="160" fill="#aebbe0" font-size="11">&gt;+5% → BUY</text>
+      <text x="14" y="176" fill="#aebbe0" font-size="11">&lt;-5% → SELL</text>
+      <text x="14" y="192" fill="#aebbe0" font-size="11">else  → HOLD</text>
+    </g>
+    <g transform="translate(800,60)">
+      <rect width="240" height="200" rx="12" fill="rgba(124,92,255,0.06)" stroke="rgba(124,92,255,0.32)"/>
+      <rect x="14" y="14" width="36" height="20" rx="5" fill="rgba(124,92,255,0.22)"/>
+      <text x="32" y="28" font-size="11" font-weight="800" fill="#b896ff" text-anchor="middle">4</text>
+      <text x="60" y="30" fill="#f0f1ff" font-size="13" font-weight="700">list_my_wallets</text>
+      <text x="14" y="58" fill="#b896ff" font-size="10" font-weight="700">$0 · DB READ</text>
+      <text x="14" y="80" fill="#aebbe0" font-size="11">SELECT WalletUser</text>
+      <text x="14" y="96" fill="#aebbe0" font-size="11">WHERE imported_by =</text>
+      <text x="14" y="112" fill="#aebbe0" font-size="11">  current_user.id</text>
+      <text x="14" y="160" fill="#aebbe0" font-size="11">Returns: address, alias,</text>
+      <text x="14" y="176" fill="#aebbe0" font-size="11">is_master, can_sign</text>
+      <text x="14" y="192" fill="#aebbe0" font-size="11">No DB write</text>
+    </g>
+    <g transform="translate(1060,60)">
+      <rect width="240" height="200" rx="12" fill="rgba(255,208,102,0.06)" stroke="rgba(255,208,102,0.32)"/>
+      <rect x="14" y="14" width="36" height="20" rx="5" fill="rgba(255,208,102,0.22)"/>
+      <text x="32" y="28" font-size="11" font-weight="800" fill="#ffd066" text-anchor="middle">5</text>
+      <text x="60" y="30" fill="#f0f1ff" font-size="13" font-weight="700">propose_transaction</text>
+      <text x="14" y="58" fill="#ffd066" font-size="10" font-weight="700">$0 · DRY-RUN</text>
+      <text x="14" y="80" fill="#aebbe0" font-size="11">Builds XRPL Payment</text>
+      <text x="14" y="96" fill="#aebbe0" font-size="11">stores ticket in session</text>
+      <text x="14" y="112" fill="#aebbe0" font-size="11">5-min TTL · single-use</text>
+      <text x="14" y="160" fill="#aebbe0" font-size="11">Returns:</text>
+      <text x="14" y="176" fill="#aebbe0" font-size="11">ticket_id + 6-digit code</text>
+      <text x="14" y="192" fill="#aebbe0" font-size="11">NEVER broadcasts</text>
+    </g>
+    <g transform="translate(1320,60)">
+      <rect width="140" height="200" rx="12" fill="rgba(255,107,139,0.06)" stroke="rgba(255,107,139,0.32)"/>
+      <rect x="14" y="14" width="36" height="20" rx="5" fill="rgba(255,107,139,0.22)"/>
+      <text x="32" y="28" font-size="11" font-weight="800" fill="#ff8aa3" text-anchor="middle">6</text>
+      <text x="60" y="30" fill="#f0f1ff" font-size="11" font-weight="700">confirm</text>
+      <text x="14" y="58" fill="#ff8aa3" font-size="10" font-weight="700">XRPL FEE</text>
+      <text x="14" y="80" fill="#aebbe0" font-size="11">Match code +</text>
+      <text x="14" y="96" fill="#aebbe0" font-size="11">cap check</text>
+      <text x="14" y="120" fill="#aebbe0" font-size="11">submit_and_wait</text>
+      <text x="14" y="160" fill="#aebbe0" font-size="11">Returns tx_hash</text>
+      <text x="14" y="176" fill="#aebbe0" font-size="11">+ explorer URL</text>
+      <text x="14" y="192" fill="#aebbe0" font-size="11">Ticket discarded</text>
+    </g>
+  </g>
+
+  <!-- Arrows from steps to brain -->
+  <path d="M380,190 C 540,190 660,400 700,490" stroke="#62ffd2" stroke-width="1.5" fill="none" marker-end="url(#aA)"/>
+  <path d="M380,300 C 540,300 660,440 700,500" stroke="#62ffd2" stroke-width="1.5" fill="none" marker-end="url(#aA)"/>
+  <path d="M380,410 C 540,410 660,470 700,510" stroke="#ff7eb6" stroke-width="1.5" fill="none" marker-end="url(#aA)"/>
+  <path d="M380,520 C 540,520 660,520 700,520" stroke="#ff7eb6" stroke-width="1.5" fill="none" marker-end="url(#aA)"/>
+  <path d="M380,630 C 540,630 660,580 700,540" stroke="#b896ff" stroke-width="1.5" fill="none" marker-end="url(#aA)"/>
+
+  <path d="M900,470 C 1050,470 1100,190 1220,190" stroke="#ffd066" stroke-width="1.5" fill="none" marker-end="url(#aA)"/>
+  <path d="M900,490 C 1050,490 1100,300 1220,300" stroke="#ffd066" stroke-width="1.5" fill="none" marker-end="url(#aA)"/>
+  <path d="M900,510 C 1050,510 1100,410 1220,410" stroke="#62ffd2" stroke-width="1.5" fill="none" marker-end="url(#aA)"/>
+  <path d="M900,530 C 1050,530 1100,520 1220,520" stroke="#ffd066" stroke-width="1.5" fill="none" marker-end="url(#aA)"/>
+  <path d="M900,550 C 1050,550 1100,630 1220,630" stroke="#b896ff" stroke-width="1.5" fill="none" marker-end="url(#aA)"/>
+
+  <text x="40" y="1080" font-size="11" fill="#7d89aa">github.com/baali-who/rwaise · MIT · iter-21</text>
+  <text x="1560" y="1080" text-anchor="end" font-size="11" fill="#7d89aa">RWAiSE · AI Agent Flow · 2026</text>
+</svg>

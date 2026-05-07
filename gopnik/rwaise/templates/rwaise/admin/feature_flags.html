@@ -1,0 +1,213 @@
+{% extends "rwaise/_base.html" %}
+{% block title %}RWAiSE feature flags — Admin{% endblock %}
+
+{% block head %}
+{{ super() }}
+<style>
+  .rwaise-master-card {
+    background: linear-gradient(135deg, rgba(124,92,255,0.16), rgba(0,229,184,0.10));
+    border: 1px solid rgba(124,92,255,0.32);
+    border-radius: 22px; padding: 32px 36px; margin-bottom: 28px;
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 32px; align-items: center;
+  }
+  .rwaise-master-title {
+    font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: #62ffd2; font-weight: 700; margin-bottom: 6px;
+  }
+  .rwaise-master-name {
+    font-size: 1.85rem; font-weight: 800; margin: 0 0 6px;
+    background: linear-gradient(135deg,#00e5b8,#7c5cff,#e5318a);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+  }
+  .rwaise-master-sub { color: var(--rwaise-muted); margin: 0; max-width: 600px; line-height: 1.5; }
+  .rwaise-master-status {
+    margin-top: 14px; display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px; border-radius: 999px; font-weight: 600; font-size: 0.86rem;
+  }
+  .rwaise-master-status.on  { background: rgba(0,229,184,0.16); color: #62ffd2;
+                              border: 1px solid rgba(0,229,184,0.42); }
+  .rwaise-master-status.off { background: rgba(255,107,139,0.12); color: #ff6b8b;
+                              border: 1px solid rgba(255,107,139,0.42); }
+  .rwaise-master-status .pulse {
+    width: 8px; height: 8px; border-radius: 50%; background: currentColor;
+    animation: gn-master-pulse 2s infinite;
+  }
+  @keyframes gn-master-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(98,255,210,0.45); }
+    70%  { box-shadow: 0 0 0 8px rgba(98,255,210,0); }
+    100% { box-shadow: 0 0 0 0 rgba(98,255,210,0); }
+  }
+
+  .rwaise-big-toggle {
+    --w: 96px; --h: 52px;
+    position: relative; display: inline-block;
+    width: var(--w); height: var(--h); cursor: pointer; flex-shrink: 0;
+  }
+  .rwaise-big-toggle input { opacity: 0; width: 0; height: 0; }
+  .rwaise-big-toggle .slider {
+    position: absolute; inset: 0;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: var(--h);
+    transition: all 0.25s cubic-bezier(.4,0,.2,1);
+  }
+  .rwaise-big-toggle .slider::before {
+    content: "";
+    position: absolute;
+    width: calc(var(--h) - 8px); height: calc(var(--h) - 8px);
+    left: 4px; top: 4px;
+    background: white; border-radius: 50%;
+    transition: all 0.25s cubic-bezier(.4,0,.2,1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.30);
+  }
+  .rwaise-big-toggle input:checked + .slider {
+    background: linear-gradient(135deg, #00e5b8 0%, #7c5cff 60%, #e5318a 100%);
+    border-color: rgba(0,229,184,0.45);
+    box-shadow: 0 0 24px rgba(124,92,255,0.40);
+  }
+  .rwaise-big-toggle input:checked + .slider::before {
+    transform: translateX(calc(var(--w) - var(--h)));
+  }
+
+  .rwaise-flag-grid {
+    display: grid; gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    margin-top: 22px;
+  }
+  .rwaise-flag-card {
+    background: rgba(15,16,48,0.55);
+    border: 1px solid rgba(124,92,255,0.18);
+    border-radius: 14px; padding: 16px 18px;
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 16px; align-items: center;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .rwaise-flag-card:hover {
+    border-color: rgba(124,92,255,0.42);
+    box-shadow: 0 6px 18px -10px rgba(124,92,255,0.32);
+  }
+  .rwaise-flag-card.disabled { opacity: 0.5; pointer-events: none; }
+  .rwaise-flag-name { font-family: ui-monospace, monospace;
+                      font-size: 0.78rem; color: var(--rwaise-muted); }
+  .rwaise-flag-pretty { font-size: 1.02rem; font-weight: 600; margin: 2px 0 0;
+                        color: var(--rwaise-strong); }
+  .rwaise-flag-desc { font-size: 0.82rem; color: var(--rwaise-muted);
+                      margin-top: 4px; line-height: 1.4; }
+  .rwaise-floor-warning {
+    background: rgba(255,107,139,0.08);
+    border: 1px solid rgba(255,107,139,0.32);
+    color: #ff8a99; border-radius: 12px;
+    padding: 14px 18px; margin-bottom: 22px; font-size: 0.92rem;
+  }
+  .rwaise-floor-warning code {
+    background: rgba(0,0,0,0.30); padding: 1px 6px; border-radius: 4px;
+    font-size: 0.86rem; color: #ffd066;
+  }
+</style>
+{% endblock %}
+
+{% set sub_flag_meta = {
+    "WIZARD":         ("9-step tokenisation wizard",       "Asset issuance flow with AI co-pilot."),
+    "AI_COPILOT":     ("Bedrock Claude co-pilot",          "Drafts prospectus, suggests MPT params, reviews docs."),
+    "CREDENTIALS":    ("XLS-65 layered credentials",       "Verified investor + jurisdiction + accreditation grants."),
+    "ORDERBOOK":      ("XLS-66-ready order book",          "Price-time-priority matcher with permissioned-DEX seam."),
+    "ESCROW":         ("MPT-aware escrow",                  "Hold MPT in finish-after / cancel-after escrow."),
+    "REDEMPTION":     ("4-eyes redemption pipeline",        "Two-admin approval to fiat payout to on-ledger burn."),
+    "X402":           ("HTTP 402 paid public APIs",        "Pay-per-call API monetisation on the XRP Ledger."),
+    "BEDROCK_AGENT":  ("In-product Bedrock agent",         "RWAiSE Trader chat: quotes, orders, redemptions."),
+    "DEVELOPER_API":  ("OAuth 2.0 developer platform",     "Self-serve client_credentials and paid public API."),
+    "ODL":            ("XLS-71 ODL routing",               "Cross-currency value transfer through bridge MPTs."),
+    "HSM_SIGNER":     ("AWS KMS / CloudHSM signer",        "Production signer; keys never touch the Fargate task."),
+} %}
+
+{% block rwaise_content %}
+<div class="rwaise-page-header">
+  <h1>RWAiSE feature flags</h1>
+  <span class="pill">Admin / cluster-wide</span>
+</div>
+
+{% set master_on = flags.get("RWAISE_ENABLED", false) %}
+
+{% if not master_on %}
+<div class="rwaise-floor-warning">
+  Master switch is OFF. The env var <code>RWAISE_ENABLED=1</code> must be set in
+  the Fargate task definition before the toggle below can take effect. Once that's set,
+  this page controls the cluster-wide DB row that gates every feature.
+</div>
+{% endif %}
+
+<div class="rwaise-master-card">
+  <div>
+    <div class="rwaise-master-title">Master switch</div>
+    <h2 class="rwaise-master-name">RWAiSE plugin</h2>
+    <p class="rwaise-master-sub">
+      One toggle. Flips every sub-feature off cluster-wide. Propagation through
+      Redis broadcast within ~5 seconds. Audit-trailed.
+    </p>
+    <div class="rwaise-master-status {{ 'on' if master_on else 'off' }}">
+      <span class="pulse" aria-hidden="true"></span>
+      {{ 'ACTIVE' if master_on else 'PAUSED' }}
+    </div>
+  </div>
+
+  <form method="post" action="{{ url_for('rwaise_admin_flags.toggle') }}" id="masterForm">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="name" value="RWAISE_ENABLED">
+    <input type="hidden" name="enabled" value="{{ 'false' if master_on else 'true' }}">
+    <input type="hidden" name="reason" value="admin panel master toggle">
+    <label class="rwaise-big-toggle" title="Click to {{ 'disable' if master_on else 'enable' }}">
+      <input type="checkbox" {% if master_on %}checked{% endif %}
+             onchange="document.getElementById('masterForm').submit()">
+      <span class="slider"></span>
+    </label>
+  </form>
+</div>
+
+<h3 style="margin: 28px 0 10px; font-weight: 700;">Sub-features</h3>
+<p style="color: var(--rwaise-muted); margin: 0 0 8px; font-size: 0.92rem;">
+  Each capability is independently togglable. Disabled when the master switch is OFF.
+</p>
+
+<div class="rwaise-flag-grid">
+  {% for name in sub_flags %}
+    {% set key = "RWAISE_FEATURE_" ~ name %}
+    {% set value = flags.get(key, false) %}
+    {% set pretty_desc = sub_flag_meta.get(name) %}
+    <div class="rwaise-flag-card {% if not master_on %}disabled{% endif %}">
+      <div>
+        <div class="rwaise-flag-name">{{ key }}</div>
+        <div class="rwaise-flag-pretty">{{ pretty_desc[0] if pretty_desc else "Sub-feature " ~ name }}</div>
+        <div class="rwaise-flag-desc">{{ pretty_desc[1] if pretty_desc else "" }}</div>
+      </div>
+      <form method="post" action="{{ url_for('rwaise_admin_flags.toggle') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="name" value="{{ key }}">
+        <input type="hidden" name="enabled" value="{{ 'false' if value else 'true' }}">
+        <input type="hidden" name="reason" value="admin panel sub-flag toggle">
+        <label class="rwaise-toggle" title="{{ 'Disable' if value else 'Enable' }}">
+          <input type="checkbox" {% if value %}checked{% endif %}
+                 {% if not master_on %}disabled{% endif %}
+                 onchange="this.form.submit()">
+          <span class="slider"></span>
+        </label>
+      </form>
+    </div>
+  {% endfor %}
+</div>
+
+<div style="margin-top: 32px; padding-top: 22px;
+            border-top: 1px solid rgba(124,92,255,0.16);
+            display: flex; gap: 18px; flex-wrap: wrap; align-items: center;">
+  <a class="rwaise-btn rwaise-btn-secondary" href="{{ url_for('rwaise_admin_flags.audit') }}">
+    View audit trail
+  </a>
+  <a class="rwaise-btn rwaise-btn-secondary" href="{{ url_for('rwaise.home') }}">
+    Open RWAiSE home
+  </a>
+  <a class="rwaise-btn" href="{{ url_for('rwaise.demo_walkthrough') }}">
+    Hackathon demo walkthrough
+  </a>
+</div>
+{% endblock %}

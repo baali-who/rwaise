@@ -1,0 +1,215 @@
+{% extends "rwaise/_base.html" %}
+{% block title %}RWAiSE — Real-World Asset Issuance & Settlement{% endblock %}
+
+{% block head %}
+{{ super() }}
+<style>
+  .rwaise-hero {
+    position: relative;
+    margin: 12px 0 36px;
+    padding: 56px 48px;
+    border-radius: 28px;
+    background:
+      radial-gradient(800px circle at 15% 0%, rgba(124,92,255,0.20), transparent 50%),
+      radial-gradient(700px circle at 100% 80%, rgba(0,229,184,0.18), transparent 60%),
+      radial-gradient(600px circle at 60% 100%, rgba(229,49,138,0.15), transparent 55%),
+      rgba(15,16,48,0.55);
+    border: 1px solid rgba(124,92,255,0.32);
+    overflow: hidden;
+  }
+  .rwaise-hero::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(15,16,48,0.30));
+    pointer-events: none;
+  }
+  .rwaise-hero-tag {
+    display: inline-block;
+    padding: 6px 14px; border-radius: 999px;
+    background: rgba(0,229,184,0.14); color: #62ffd2;
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase;
+    border: 1px solid rgba(0,229,184,0.28);
+  }
+  .rwaise-hero h1 {
+    margin: 18px 0 12px;
+    font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 800;
+    letter-spacing: -0.02em; line-height: 1.1;
+    background: linear-gradient(135deg, #00e5b8 0%, #7c5cff 60%, #e5318a 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+  }
+  .rwaise-hero p.lead {
+    max-width: 640px;
+    color: var(--rwaise-strong);
+    font-size: 1.1rem; line-height: 1.55; margin: 0 0 24px;
+  }
+  .rwaise-hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  .rwaise-stats {
+    display: grid; gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    margin-bottom: 36px;
+  }
+  .rwaise-stat-card {
+    background: rgba(15,16,48,0.55);
+    border: 1px solid rgba(124,92,255,0.18);
+    border-radius: 14px; padding: 18px 20px;
+  }
+  .rwaise-stat-num {
+    font-size: 1.85rem; font-weight: 800;
+    background: linear-gradient(135deg, #00e5b8, #7c5cff);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+  }
+  .rwaise-stat-label {
+    color: var(--rwaise-muted); font-size: 0.84rem;
+    margin-top: 4px;
+  }
+
+  .rwaise-feature-card {
+    display: block; text-decoration: none;
+    background: rgba(15,16,48,0.55);
+    border: 1px solid rgba(124,92,255,0.20);
+    border-radius: 18px; padding: 24px;
+    transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+  }
+  .rwaise-feature-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(124,92,255,0.42);
+    box-shadow: 0 18px 36px -18px rgba(124,92,255,0.40);
+  }
+  .rwaise-feature-icon {
+    font-size: 1.6rem;
+    width: 48px; height: 48px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(0,229,184,0.18), rgba(124,92,255,0.18));
+    margin-bottom: 14px;
+  }
+  .rwaise-feature-card h3 {
+    margin: 0 0 6px; font-size: 1.12rem; color: var(--rwaise-strong);
+  }
+  .rwaise-feature-card p {
+    margin: 0; color: var(--rwaise-muted); font-size: 0.92rem; line-height: 1.5;
+  }
+  .rwaise-feature-card.coming-soon { opacity: 0.65; }
+  .rwaise-feature-tag {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 2px 10px; border-radius: 999px;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: rgba(0,229,184,0.16); color: #62ffd2;
+  }
+  .rwaise-feature-tag.soon { background: rgba(255,208,102,0.12); color: #ffd066; }
+</style>
+{% endblock %}
+
+{% block rwaise_content %}
+<div class="rwaise-hero">
+  <span class="rwaise-hero-tag">RWAiSE / v1.0</span>
+  <h1>Real-World Assets,<br>natively on the XRP Ledger.</h1>
+  <p class="lead">
+    Issue tokenised assets in under 20 minutes with an AI co-pilot. Trade them through a credentialed
+    marketplace. Redeem them with 4-eyes compliance. Sell access to your data over HTTP 402. All
+    inside the Gopnik wallet you already use.
+  </p>
+  <div class="rwaise-hero-actions">
+    <a class="rwaise-btn" href="{{ url_for('rwaise.demo_walkthrough') }}">
+      Start the demo walkthrough &rarr;
+    </a>
+    <a class="rwaise-btn rwaise-btn-secondary" href="{{ url_for('rwaise.wizard') }}">
+      Open the wizard
+    </a>
+    <a class="rwaise-btn rwaise-btn-secondary" href="{{ url_for('rwaise.marketplace_index') }}">
+      Browse marketplace
+    </a>
+  </div>
+</div>
+
+<div class="rwaise-stats">
+  <div class="rwaise-stat-card">
+    <div class="rwaise-stat-num">8</div>
+    <div class="rwaise-stat-label">Demo asset classes</div>
+  </div>
+  <div class="rwaise-stat-card">
+    <div class="rwaise-stat-num">11</div>
+    <div class="rwaise-stat-label">Toggleable features</div>
+  </div>
+  <div class="rwaise-stat-card">
+    <div class="rwaise-stat-num">XLS-33</div>
+    <div class="rwaise-stat-label">Multi-Purpose Tokens</div>
+  </div>
+  <div class="rwaise-stat-card">
+    <div class="rwaise-stat-num">XLS-65</div>
+    <div class="rwaise-stat-label">Layered credentials</div>
+  </div>
+  <div class="rwaise-stat-card">
+    <div class="rwaise-stat-num">x402</div>
+    <div class="rwaise-stat-label">Paid public API</div>
+  </div>
+</div>
+
+<h2 style="margin: 30px 0 6px; font-size: 1.5rem; font-weight: 700;">What you can do here</h2>
+<p style="color: var(--rwaise-muted); margin-bottom: 20px;">
+  Every card below is a fully clickable surface in the demo. Start anywhere; the walkthrough takes
+  you through them in the recommended order.
+</p>
+
+<div class="rwaise-grid">
+  <a class="rwaise-feature-card" href="{{ url_for('rwaise.wizard') }}">
+    <div class="rwaise-feature-icon">📋</div>
+    <h3>Tokenize an asset</h3>
+    <p>9-step wizard with an AWS Bedrock Claude co-pilot. From asset class to on-ledger
+    <code>MPTokenIssuanceCreate</code> in under 20 minutes.</p>
+    <span class="rwaise-feature-tag">Live</span>
+  </a>
+  <a class="rwaise-feature-card" href="{{ url_for('rwaise.marketplace_index') }}">
+    <div class="rwaise-feature-icon">🏛</div>
+    <h3>Marketplace</h3>
+    <p>Cap-table-aware listings filtered against the visiting wallet's XLS-65 credential set.
+    XLS-66-ready order book underneath.</p>
+    <span class="rwaise-feature-tag">Live</span>
+  </a>
+  <a class="rwaise-feature-card" href="{{ url_for('rwaise.my_holdings') }}">
+    <div class="rwaise-feature-icon">💼</div>
+    <h3>My holdings</h3>
+    <p>Live MPT balances across every wallet you own. Distribution events, lock state,
+    redemption queue position.</p>
+    <span class="rwaise-feature-tag">Live</span>
+  </a>
+  <a class="rwaise-feature-card" href="{{ url_for('rwaise.agent_chat') }}">
+    <div class="rwaise-feature-icon">🤖</div>
+    <h3>RWAiSE Trader (AI)</h3>
+    <p>Claude Sonnet 4.6 on AWS Bedrock. Chat about your portfolio, get quotes, draft tickets.
+    Per-user spending caps enforced.</p>
+    <span class="rwaise-feature-tag">Live</span>
+  </a>
+  <a class="rwaise-feature-card" href="{{ url_for('rwaise.audit_trail') }}">
+    <div class="rwaise-feature-icon">📜</div>
+    <h3>Audit trail</h3>
+    <p>Every state-changing event for every issuance: create, authorize, distribute, transfer,
+    lock, clawback, redeem.</p>
+    <span class="rwaise-feature-tag">Live</span>
+  </a>
+  <a class="rwaise-feature-card" href="{{ url_for('rwaise_admin_flags.index') }}">
+    <div class="rwaise-feature-icon">⚙️</div>
+    <h3>Admin · feature flags</h3>
+    <p>Cluster-wide kill switch and 11 sub-flag toggles. Propagation in 5 seconds via Redis.
+    Audit-trailed.</p>
+    <span class="rwaise-feature-tag">Admin</span>
+  </a>
+</div>
+
+<div style="margin-top: 36px; padding: 20px 24px;
+            border-radius: 16px;
+            background: rgba(124,92,255,0.06);
+            border: 1px dashed rgba(124,92,255,0.32);
+            color: var(--rwaise-muted); font-size: 0.92rem;">
+  <strong style="color: var(--rwaise-strong);">Hackathon judges:</strong>
+  click <a href="{{ url_for('rwaise.demo_walkthrough') }}" style="color: #62ffd2;">"Demo walkthrough"</a>
+  for the guided tour. The walkthrough is one page, takes 90 seconds to scroll, and shows every
+  capability with screenshots and one-click links.
+</div>
+{% endblock %}
