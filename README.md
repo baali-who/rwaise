@@ -10,7 +10,7 @@
 [![x402](https://img.shields.io/badge/Pay-x402%20protocol-ffd066?style=flat-square)](https://x402.org/)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-aebbe0?style=flat-square)](https://python.org/)
 
-**RWAiSE** is a Flask plugin for the [Gopnik wallet](https://wallet.gopnik.io) that turns illiquid real-world assets into XRPL **Multi-Purpose Tokens** (XLS-33), enforces compliance with **layered credentials** (XLS-65), settles redemption with **4-eyes review**, exposes paid public APIs over **HTTP 402** (the x402 protocol), and ships an **in-product AI agent** that researches markets and proposes XRPL transactions on the user's behalf — with explicit confirmation gates between Claude and your XRP.
+**RWAiSE** is a Flask plugin for the [Gopnik wallet](https://www.xrpl-wallet.com) that turns illiquid real-world assets into XRPL **Multi-Purpose Tokens** (XLS-33), enforces compliance with **layered credentials** (XLS-65), settles redemption with **4-eyes review**, exposes paid public APIs over **HTTP 402** (the x402 protocol), and ships an **in-product AI agent** that researches markets and proposes XRPL transactions on the user's behalf — with explicit confirmation gates between Claude and your XRP.
 
 </div>
 
